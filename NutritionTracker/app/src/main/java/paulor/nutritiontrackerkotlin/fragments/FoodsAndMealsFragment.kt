@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.viewModels
@@ -24,9 +25,10 @@ class DashboardFragment : Fragment(), OnItemClickListener {
 
     private var layout: FragmentFoodsAndMealsBinding? = null
     lateinit var recyclerView: RecyclerView
+    private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        layout = FragmentFoodsAndMealsBinding.inflate(inflater, container, false)
+        layout = FragmentFoodsAndMealsBinding.inflate(layoutInflater, container, false)
         val root: View = layout!!.root
         recyclerView = layout!!.nutrientsListRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(root.context /*or activity*/)

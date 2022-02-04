@@ -52,10 +52,14 @@ enum class Nutrients(
     O3("Omega 3", Group.F, 1600f),  //alpha-linolenic acid 3.8xOmega6 radio
     O6("Omega 6", Group.F, 420f); //linoleic acid
 
-    val getAll = this.javaClass.enumConstants
-
     companion object {
         val ammountOfNutrients = values().size
+        fun getNutrient(string: String) : Nutrients? {
+            values().forEach {
+                if(it.name==string) return it
+            }
+            return null
+        }
     }
 
     enum class Group(val group: String) {
@@ -64,5 +68,7 @@ enum class Nutrients(
         M("Mineral"),
         F("Fatty acid")
     }
+
+
 }
 

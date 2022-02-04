@@ -7,13 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import paulor.nutritiontrackerkotlin.MainActivityViewModel
 import paulor.nutritiontrackerkotlin.databinding.FragmentHomeBinding
+import paulor.nutritiontrackerkotlin.log
 
 class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by viewModels()
     private var layout: FragmentHomeBinding? = null
-
+    private val viewModel2: MainActivityViewModel by viewModels()
     // This property is only valid between onCreateView and
     // onDestroyView.
 
@@ -21,6 +23,9 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layout = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = layout!!.root
+        layout!!.button.setOnClickListener {
+            viewModel2.getValues()
+        }
 
         return root
     }

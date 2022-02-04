@@ -5,12 +5,10 @@ import androidx.room.*
 @Entity(tableName = "FOODS")
 data class FoodsTable (
     @PrimaryKey val name: String,
-    val nutrients: Array<Nutrients?>,
     val values: FloatArray
 ) {
     fun toFood() = Food(
         name = this.name,
-        nutrients = this.nutrients,
         values = this.values
     )
 }
@@ -19,7 +17,7 @@ data class FoodsTable (
 data class MealsTable (
     @PrimaryKey val name: String,
     val foods: Array<Food>,
-    val ammount: IntArray
+    val ammountGrams: IntArray
 ) {
 
 }
@@ -38,17 +36,38 @@ interface TablesDAO { // Data Access Object, provides methods that your app can 
     @Query("SELECT * FROM FOODS ORDER BY name DESC") //to change color: Color scheme -> General -> Injected language fragment
     fun getAll() : List<FoodsTable>
 
-    @Query("SELECT * FROM FOODS ORDER BY name DESC LIMIT :count")
+    @Query("SELECT * FROM FOODS ORDER BY name DESC LIMIT :count") //https://stackoverflow.com/questions/31016070/how-to-use-substring-in-rawquery-android
     fun getLast(count: Int) : List<FoodsTable>
-
-    @Query("SELECT * FROM FOODS WHERE name=:id")
-    fun getGameWithID(id: String) : FoodsTable
 
 
 }
 
-@Database(entities = [FoodsTable::class], version = 1) //creates DB schema
+@Database(entities = [FoodsTable::class/*, MealsTable::class*/], version = 1) //creates DB schema
+@TypeConverters(Converters::class)
 abstract class EdiblesDataBase : RoomDatabase(){
     abstract fun getDAO() : TablesDAO
+}
+
+@ProvidedTypeConverter
+class Converters {
+    @TypeConverter
+    fun stringToFloatArray(values: String): FloatArray {
+        val list = values.split(" ")
+        val ret = FloatArray(list.size)
+        ret.forEachIndexed{ index, _ ->
+            ret[index] = list[index].toFloat()
+        }
+        return ret
+    }
+
+    @TypeConverter
+    fun floatArrayToString(values: FloatArray): String {
+        val sb = StringBuilder()
+        values.forEach {
+            sb.append(it).append(" ")
+        }
+        sb.deleteCharAt(sb.length-1)
+        return sb.toString()
+    }
 }
 

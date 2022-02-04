@@ -16,7 +16,7 @@ import java.util.*
 private const val TAG = "Repo"
 
 class NutritionTrackerRepo(private val dao: TablesDAO) {
-    private fun getLatestPuzzleFromDB(callback: (Result<FoodsTable?>) -> Unit) {
+    fun getLatestFoodFromDB(callback: (Result<FoodsTable?>) -> Unit) {
         callbackAfterAsync(callback) {
             dao.getLast(1).firstOrNull()
         }

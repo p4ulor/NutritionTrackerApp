@@ -7,36 +7,38 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.room.Room
-import paulor.nutritiontrackerkotlin.model.EdiblesDataBase
-import paulor.nutritiontrackerkotlin.model.FoodsTable
-import paulor.nutritiontrackerkotlin.model.Nutrients
-import paulor.nutritiontrackerkotlin.model.doAsync
+import paulor.nutritiontrackerkotlin.model.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
+// ADD "<application
+//        android:name=".NutritionTrackerApp" FOR THIS CLASS TO WORK
+
 private const val TAG = "LOG_"
 private const val DATEPATTERN = "dd/M/yyyy" //The 'M' must be uppercase or it will read the minutes
-private const val DB = "edibles" //DataBase key
-private val allNutrients: Array<Nutrients?> = arrayOf(Nutrients.CAL, Nutrients.PRO, Nutrients.FAT, Nutrients.FIB,                   Nutrients.VA, Nutrients.VC, Nutrients.VE, Nutrients.VK, Nutrients.V1, Nutrients.V2, Nutrients.V3, Nutrients.V5, Nutrients.V6, Nutrients.V9, Nutrients.V12,                  Nutrients.CALC, Nutrients.IR, Nutrients.MAG, Nutrients.PH, Nutrients.POT, Nutrients.SOD, Nutrients.ZI, Nutrients.COP, Nutrients.MAN, Nutrients.SEL,                  Nutrients.O3, Nutrients.O6)
+private val allNutrients: Array<Nutrients> = Nutrients.values()
 
 class NutritionTrackerApp : Application() {
-    val historyDB: EdiblesDataBase by lazy {
-        Room.databaseBuilder(this, EdiblesDataBase::class.java, DB).build()
+
+    init { Log.i(TAG, "NutritionTrackerApp executed") }
+
+    val ediblesDB: EdiblesDataBase by lazy {
+        Room.databaseBuilder(this, EdiblesDataBase::class.java, "edibles"/*DB key*/).addTypeConverter(Converters()).build()
     }
 
     val repo: NutritionTrackerRepo by lazy {
-        NutritionTrackerRepo(historyDB.getDAO())
+        NutritionTrackerRepo(ediblesDB.getDAO())
     }
 
     override fun onCreate() {
         super.onCreate()
+        log("App created")
         doAsync {
-            Log.v(TAG, "Initializing DB")
-            historyDB.getDAO().insert( //For demonstration purposes. It's default puzzle that already comes with the app :)
+            log(TAG, "Initializing DB")
+            ediblesDB.getDAO().insert( //For demonstration purposes. It's default puzzle that already comes with the app :)
                 FoodsTable(
                     name = "Oats",
-                    nutrients = allNutrients,
                     values = floatArrayOf(367f, 56.1f, 12.1f, 8.4f, 9.1f, 0.4f, 0.002f, 0.5f, 0.2f, 1.1f, 1.1f, 0.1f, 32f, 52f, 4.3f, 138f, 410f, 362f, 6f, 3.6f, 0.4f, 3.6f, 0.0289f, 100f, 2200f)
                 )
             )

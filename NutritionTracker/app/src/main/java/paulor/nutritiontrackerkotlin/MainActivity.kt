@@ -7,16 +7,14 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import paulor.nutritiontrackerkotlin.databinding.ActivityMainBinding
-import paulor.nutritiontrackerkotlin.model.Food
-import paulor.nutritiontrackerkotlin.model.TablesDAO
-import paulor.nutritiontrackerkotlin.model.doAsyncWithResult
+import paulor.nutritiontrackerkotlin.model.*
 
+private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,9 +25,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-
 
         val navView: BottomNavigationView = binding.navView
 
@@ -50,19 +45,25 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
     var history: List<Food>? = null
         private set
 
-    var gameSelected: Int = -1
-
-    val historyDB: TablesDAO by lazy {
-        getApplication<NutritionTrackerApp>().historyDB.getDAO()
+    val foodsDTO: TablesDAO by lazy {
+        getApplication<NutritionTrackerApp>().ediblesDB.getDAO()
     }
 
     fun loadHistory() : LiveData<List<Food>?> {
         val result = doAsyncWithResult {
-            historyDB.getAll().map {
+            foodsDTO.getAll().map {
                 it.toFood()
             }
         }
         history = result.value
         return result
+    }
+
+    fun getValues(){
+        NutritionTrackerRepo(foodsDTO).getLatestFoodFromDB {
+            it.onSuccess {
+                log(it.toString())
+            }
+        }
     }
 }
