@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import paulor.nutritiontrackerkotlin.MainActivityViewModel
@@ -25,7 +27,7 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
 
     private lateinit var layout: FragmentFoodsAndMealsBinding
     lateinit var recyclerView: RecyclerView
-    private val viewModel: MainActivityViewModel by viewModels()
+    private val viewModel: MainActivityViewModel by activityViewModels() //is a reference to the same instance of the view model of the activity that hosts this fragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         log("onCreateView")
@@ -37,6 +39,7 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
 
         layout.addNewEdibleButton.setOnClickListener {
             viewModel.getValuesToLog()
+            log(activity?.supportFragmentManager?.backStackEntryCount.toString())
         }
 
         return root
@@ -52,6 +55,11 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
 
     override fun onItemClicked(gameDTO: Food, holderPosition: Int) {
         findNavController().navigate(R.id.action_food_and_meals_to_nutrition_facts)
-        toast("yes", activity?.baseContext!!)
+        navOptions {
+            anim {
+                enter = android.R.animator.fade_in
+                exit = android.R.animator.fade_out
+            }
+        }
     }
 }

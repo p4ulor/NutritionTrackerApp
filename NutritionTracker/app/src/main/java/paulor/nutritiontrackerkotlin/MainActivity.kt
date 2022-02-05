@@ -2,9 +2,11 @@ package paulor.nutritiontrackerkotlin
 
 import android.app.Application
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.navigation.findNavController
@@ -36,6 +38,18 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId==android.R.id.home) {
+            supportFragmentManager.popBackStack()
+            if(supportFragmentManager.backStackEntryCount==0){
+                supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+                supportActionBar!!.setHomeButtonEnabled(false)
+            }
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
 

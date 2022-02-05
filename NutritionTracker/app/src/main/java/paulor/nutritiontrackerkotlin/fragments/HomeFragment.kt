@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import paulor.nutritiontrackerkotlin.MainActivityViewModel
@@ -13,15 +14,14 @@ import paulor.nutritiontrackerkotlin.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     private lateinit var layout: FragmentHomeBinding
-    private val viewModel: HomeViewModel by viewModels()
-    private val viewModel2: MainActivityViewModel by viewModels()
+    private val viewModel: MainActivityViewModel by activityViewModels() //is a reference to the same instance of the view model of the activity that hosts this fragment
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layout = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = layout.root
 
         layout.button.setOnClickListener {
-            viewModel2.getValuesToLog()
+            viewModel.getValuesToLog()
         }
 
         return root
