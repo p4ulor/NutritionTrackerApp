@@ -15,6 +15,7 @@
         android:id="@+id/name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/gotham_medium"
         android:gravity="center"
         android:maxLines="4"
         android:singleLine="false"
@@ -22,19 +23,8 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Quinoa with soup and lentils and garlic \n yes a lot \n of food" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="49dp"
-        android:layout_height="54dp"
-        android:contentDescription="an eye"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_remove_red_eye_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

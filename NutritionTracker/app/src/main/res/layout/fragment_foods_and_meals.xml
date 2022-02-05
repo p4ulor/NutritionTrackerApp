@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="50dp"
-    tools:context=".fragments.foodsandmeals.DashboardFragment">
+    tools:context=".fragments.FoodsAndMealsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nutrientsListRecyclerView"
@@ -14,14 +14,14 @@
         android:layout_height="0dp"
         android:scrollbars="vertical"
         android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/addNewEdible"
+        app:layout_constraintBottom_toTopOf="@+id/addNewEdibleButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/food_or_meal_tuple" />
 
     <Button
-        android:id="@+id/addNewEdible"
+        android:id="@+id/addNewEdibleButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/button_style"

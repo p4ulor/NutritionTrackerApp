@@ -17,11 +17,8 @@ import java.util.*
 
 private const val TAG = "LOG_"
 private const val DATEPATTERN = "dd/M/yyyy" //The 'M' must be uppercase or it will read the minutes
-private val allNutrients: Array<Nutrients> = Nutrients.values()
 
 class NutritionTrackerApp : Application() {
-
-    init { Log.i(TAG, "NutritionTrackerApp executed") }
 
     val ediblesDB: EdiblesDataBase by lazy {
         Room.databaseBuilder(this, EdiblesDataBase::class.java, "edibles"/*DB key*/).addTypeConverter(Converters()).build()
@@ -34,43 +31,7 @@ class NutritionTrackerApp : Application() {
     override fun onCreate() {
         super.onCreate()
         log("App created")
-        doAsync {
-            log(TAG, "Initializing DB")
-            ediblesDB.getDAO().insert( //For demonstration purposes. It's default puzzle that already comes with the app :)
-                FoodsTable(
-                    name = "Oats",
-                    values = floatArrayOf(367f, 56.1f, 12.1f, 8.4f, 9.1f, 0.4f, 0.002f, 0.5f, 0.2f, 1.1f, 1.1f, 0.1f, 32f, 52f, 4.3f, 138f, 410f, 362f, 6f, 3.6f, 0.4f, 3.6f, 0.0289f, 100f, 2200f)
-                )
-            )
-
-            ediblesDB.getDAO().insert( //For demonstration purposes. It's default puzzle that already comes with the app :)
-                FoodsTable(
-                    name = "Oats2",
-                    values = floatArrayOf(367f, 56.1f, 12.1f, 8.4f, 9.1f, 0.4f, 0.002f, 0.5f, 0.2f, 1.1f, 1.1f, 0.1f, 32f, 52f, 4.3f, 138f, 410f, 362f, 6f, 3.6f, 0.4f, 3.6f, 0.0289f, 100f, 2200f)
-                )
-            )
-
-            ediblesDB.getDAO().insert( //For demonstration purposes. It's default puzzle that already comes with the app :)
-                FoodsTable(
-                    name = "Oats3",
-                    values = floatArrayOf(367f, 56.1f, 12.1f, 8.4f, 9.1f, 0.4f, 0.002f, 0.5f, 0.2f, 1.1f, 1.1f, 0.1f, 32f, 52f, 4.3f, 138f, 410f, 362f, 6f, 3.6f, 0.4f, 3.6f, 0.0289f, 100f, 2200f)
-                )
-            )
-
-            ediblesDB.getDAO().insert( //For demonstration purposes. It's default puzzle that already comes with the app :)
-                FoodsTable(
-                    name = "Oats4",
-                    values = floatArrayOf(367f, 56.1f, 12.1f, 8.4f, 9.1f, 0.4f, 0.002f, 0.5f, 0.2f, 1.1f, 1.1f, 0.1f, 32f, 52f, 4.3f, 138f, 410f, 362f, 6f, 3.6f, 0.4f, 3.6f, 0.0289f, 100f, 2200f)
-                )
-            )
-
-            ediblesDB.getDAO().insert( //For demonstration purposes. It's default puzzle that already comes with the app :)
-                FoodsTable(
-                    name = "Oats5",
-                    values = floatArrayOf(367f, 56.1f, 12.1f, 8.4f, 9.1f, 0.4f, 0.002f, 0.5f, 0.2f, 1.1f, 1.1f, 0.1f, 32f, 52f, 4.3f, 138f, 410f, 362f, 6f, 3.6f, 0.4f, 3.6f, 0.0289f, 100f, 2200f)
-                )
-            )
-        }
+        log("Initializing DB"); initializeDB(repo)
     }
 }
 
@@ -97,7 +58,7 @@ fun convertToDate(date: String?): java.sql.Date {
 
 fun log(s: String) = Log.i(TAG, s)
 
-fun log(t: String, s: String) =  Log.i(TAG+t, s)
+fun log(t: String, s: String) = Log.i(TAG+t, s)
 
 fun log(arrayOfStrings: Array<String>?){
     val sb = StringBuilder()

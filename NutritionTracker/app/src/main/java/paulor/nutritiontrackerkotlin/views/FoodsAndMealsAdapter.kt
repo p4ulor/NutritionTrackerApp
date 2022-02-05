@@ -19,12 +19,12 @@ class FoodsAndMealsAdapter(
     }
 
     override fun onBindViewHolder(holder: HistoryItemViewHolder, position: Int) { // re-use lists. Is called more than onCreateViewHolder
-        allFoods?.get(position)?.let { holder.bindTo(it, itemClickedListener) }
+        holder.bindTo(allFoods[position], itemClickedListener)
     }
 
     override fun getItemCount(): Int = allFoods.size
 
-    //-------------------- Above methods are obligated to be overrated
+    //---Above methods are obligated to be overrated
 
     fun loadNewHistoryData(newHistory: List<Food>){
         allFoods = newHistory
@@ -32,9 +32,8 @@ class FoodsAndMealsAdapter(
     }
 
     fun getGameDTO(position: Int) : Food? {
-        return if (position > -1 && position < getItemCount()) allFoods?.get(position) else null
+        return if (position in 1 until itemCount) allFoods?.get(position) else null
     }
-
 }
 
 /*

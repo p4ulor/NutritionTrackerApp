@@ -2,12 +2,7 @@ package paulor.nutritiontrackerkotlin.model
 
 // default dailyValues are set according to: https://www.fda.gov/food/new-nutrition-facts-label/daily-value-new-nutrition-and-supplement-facts-labels
 
-enum class Nutrients(
-    val fullName: String,
-    val group: Group,
-    val dailyValue: Float
-) {
-
+enum class Nutrients(val fullName: String, val group: Group, val dailyValue: Float) {
     //5#, macros are all in g(grams)
     CAL("Calories", Group.A, 2000f),
     CARBS("Carbs", Group.A, 275f),
@@ -15,10 +10,12 @@ enum class Nutrients(
     FAT("Fat", Group.A, 78f),
     FIB("Fiber", Group.A, 28f),
 
-    //Micros are all in mg(milligrams), to convert micro grams to miligrams -> https://www.thecalculatorsite.com/conversions/common/mcg-to-mg.php value*0.001, IU to mg https://mypharmatools.com/othertools/iu
+    // Micros are all in mg(milligrams)
+    // to convert micro grams to miligrams -> https://www.thecalculatorsite.com/conversions/common/mcg-to-mg.php value*0.001,
+    // to convert IU to mg https://mypharmatools.com/othertools/iu
     //11# vitamins
     //https://en.wikipedia.org/wiki/Vitamin#List
-    //https://en.wikipedia.org/wiki/B_vitamins             Alternative nutrient names(acording to google and nutritiondata.self.com):
+    //https://en.wikipedia.org/wiki/B_vitamins            Alternative nutrient names(according to google and nutritiondata.self.com):
     VA("Vitamin A", Group.V, 0.9f),   //Retinol, retinal, retinoic acid, beta-carotene
     VC("Vitamin C", Group.V, 0.9f),   //Ascorbic acid and ascorbate
     VE("Vitamin E", Group.V, 15f),    //alpha tocopherol, alpha-tocopherol, tocotrienol
@@ -68,7 +65,5 @@ enum class Nutrients(
         M("Mineral"),
         F("Fatty acid")
     }
-
-
 }
 

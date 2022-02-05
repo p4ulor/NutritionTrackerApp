@@ -5,15 +5,14 @@
         android:id="@+id/homeScreem"
         android:icon="@drawable/ic_baseline_calendar_today_24"
         android:title="Stats" />
+    <item
+        android:id="@+id/tracklist"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+        android:title="Tracking" />
 
     <item
         android:id="@+id/food_and_meals"
         android:icon="@drawable/ic_baseline_fastfood_24"
         android:title="Edibles" />
-
-    <item
-        android:id="@+id/tracklist"
-        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
-        android:title="Tracking" />
 
 </menu>

@@ -11,21 +11,18 @@ import paulor.nutritiontrackerkotlin.databinding.FragmentTracklistBinding
 
 class TrackListFragment : Fragment() {
 
-    private var layout: FragmentTracklistBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private lateinit var layout: FragmentTracklistBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         layout = FragmentTracklistBinding.inflate(inflater, container, false)
-        val root: View = layout!!.root
+        val root: View = layout.root
+
+        layout.addNewEdibleButton.setOnClickListener {
+
+        }
 
         return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        layout = null
-    }
 }
 

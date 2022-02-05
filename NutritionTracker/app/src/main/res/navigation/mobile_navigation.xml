@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/food_and_meals"
-        android:name="paulor.nutritiontrackerkotlin.fragments.DashboardFragment"
+        android:name="paulor.nutritiontrackerkotlin.fragments.FoodsAndMealsFragment"
         android:label="Your foods and meals"
         tools:layout="@layout/fragment_foods_and_meals" >
         <action
@@ -25,11 +25,15 @@
         android:id="@+id/tracklist"
         android:name="paulor.nutritiontrackerkotlin.fragments.TrackListFragment"
         android:label="Foods you've ate"
-        tools:layout="@layout/fragment_tracklist" />
+        tools:layout="@layout/fragment_tracklist" >
+        <action
+            android:id="@+id/action_tracklist_to_nutrition_facts"
+            app:destination="@id/nutrition_facts" />
+    </fragment>
 
     <fragment
         android:id="@+id/nutrition_facts"
         android:name="paulor.nutritiontrackerkotlin.fragments.NutritionFactsFragment"
-        android:label="fragment_nutrition_facts"
+        android:label="Nutrition facts"
         tools:layout="@layout/fragment_nutrition_facts" />
 </navigation>
