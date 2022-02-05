@@ -5,10 +5,7 @@ import android.media.MediaPlayer
 import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
-import paulor.nutritiontrackerkotlin.model.Food
-import paulor.nutritiontrackerkotlin.model.FoodsTable
-import paulor.nutritiontrackerkotlin.model.TablesDAO
-import paulor.nutritiontrackerkotlin.model.callbackAfterAsync
+import paulor.nutritiontrackerkotlin.model.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,6 +23,15 @@ class NutritionTrackerRepo(private val dao: TablesDAO) {
         callbackAfterAsync(callback) {
             //dao.insert(dto.toGameTable())
         }
+    }
+
+    fun getAll(): List<Food>? {
+        val result = doAsyncWithResult {
+            dao.getAll().map {
+                it.toFood()
+            }
+        }.value
+        return result
     }
 }
 

@@ -9,9 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import paulor.nutritiontrackerkotlin.databinding.FragmentTracklistBinding
 
-class NotificationsFragment : Fragment() {
+class TrackListFragment : Fragment() {
 
-    private val viewModel: NotificationsViewModel by viewModels()
     private var layout: FragmentTracklistBinding? = null
 
     // This property is only valid between onCreateView and
@@ -30,10 +29,3 @@ class NotificationsFragment : Fragment() {
     }
 }
 
-class NotificationsViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
-    }
-    val text: LiveData<String> = _text
-}

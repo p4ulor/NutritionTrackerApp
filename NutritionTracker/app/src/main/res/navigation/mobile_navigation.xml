@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/tracklist"
-        android:name="paulor.nutritiontrackerkotlin.fragments.NotificationsFragment"
+        android:name="paulor.nutritiontrackerkotlin.fragments.TrackListFragment"
         android:label="Foods you've ate"
         tools:layout="@layout/fragment_tracklist" />
 

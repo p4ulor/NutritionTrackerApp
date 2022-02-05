@@ -3,14 +3,13 @@ package paulor.nutritiontrackerkotlin.views
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import paulor.nutritiontrackerkotlin.R
 import paulor.nutritiontrackerkotlin.model.Food
 
 class FoodsAndMealsAdapter(
-    private var gamesHistoryData: List<Food>,
+    private var allFoods: List<Food>,
     private val itemClickedListener: OnItemClickListener
     ) : RecyclerView.Adapter<HistoryItemViewHolder>() { // a view that will create tuples that ammount to only filling up the whole screen, and that constant number of views will be reused when scrolling through all the tuples
 
@@ -20,20 +19,20 @@ class FoodsAndMealsAdapter(
     }
 
     override fun onBindViewHolder(holder: HistoryItemViewHolder, position: Int) { // re-use lists. Is called more than onCreateViewHolder
-        holder.bindTo(gamesHistoryData[position], itemClickedListener)
+        allFoods?.get(position)?.let { holder.bindTo(it, itemClickedListener) }
     }
 
-    override fun getItemCount(): Int = gamesHistoryData.size
+    override fun getItemCount(): Int = allFoods.size
 
     //-------------------- Above methods are obligated to be overrated
 
     fun loadNewHistoryData(newHistory: List<Food>){
-        gamesHistoryData = newHistory
+        allFoods = newHistory
         notifyDataSetChanged()
     }
 
     fun getGameDTO(position: Int) : Food? {
-        return if (position > -1 && position < gamesHistoryData.size) gamesHistoryData[position] else null
+        return if (position > -1 && position < getItemCount()) allFoods?.get(position) else null
     }
 
 }

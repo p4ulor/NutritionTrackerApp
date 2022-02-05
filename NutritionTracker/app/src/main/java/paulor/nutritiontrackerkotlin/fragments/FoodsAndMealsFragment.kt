@@ -14,10 +14,12 @@ import androidx.recyclerview.widget.RecyclerView
 import paulor.nutritiontrackerkotlin.MainActivityViewModel
 import paulor.nutritiontrackerkotlin.NutritionTrackerApp
 import paulor.nutritiontrackerkotlin.databinding.FragmentFoodsAndMealsBinding
+import paulor.nutritiontrackerkotlin.log
 import paulor.nutritiontrackerkotlin.model.EdiblesDataBase
 import paulor.nutritiontrackerkotlin.model.Food
 import paulor.nutritiontrackerkotlin.model.TablesDAO
 import paulor.nutritiontrackerkotlin.model.doAsyncWithResult
+import paulor.nutritiontrackerkotlin.toast
 import paulor.nutritiontrackerkotlin.views.FoodsAndMealsAdapter
 import paulor.nutritiontrackerkotlin.views.OnItemClickListener
 
@@ -28,26 +30,39 @@ class DashboardFragment : Fragment(), OnItemClickListener {
     private val viewModel: MainActivityViewModel by viewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        layout = FragmentFoodsAndMealsBinding.inflate(layoutInflater, container, false)
+        log("onCreateView")
+        layout = FragmentFoodsAndMealsBinding.inflate(inflater, container, false)
         val root: View = layout!!.root
         recyclerView = layout!!.nutrientsListRecyclerView
         recyclerView.layoutManager = LinearLayoutManager(root.context /*or activity*/)
+        viewModel.loadHistory()
+        layout!!.addNewEdible.setOnClickListener {
+            viewModel.getValues()
+        }
 
         return root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        recyclerView.adapter = ViewModelProvider(this).get(MainActivityViewModel::class.java).loadHistory().value?.let {
-            FoodsAndMealsAdapter(
-                it, this)
+    
+
+    override fun onStart() {
+        super.onStart()
+        log("onStart")
+        viewModel.history?.observe(viewLifecycleOwner){
+            recyclerView.adapter = FoodsAndMealsAdapter(it, this)
         }
+        //recyclerView.adapter = FoodsAndMealsAdapter(viewModel.history?.value!!, this)
 
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+
+    }
 
     override fun onItemClicked(gameDTO: Food, holderPosition: Int) {
-
+        toast("yes", activity?.baseContext!!)
     }
 
     override fun onDestroyView() {

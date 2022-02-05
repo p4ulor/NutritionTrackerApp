@@ -42,28 +42,33 @@ class MainActivity : AppCompatActivity() {
 }
 
 class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
-    var history: List<Food>? = null
+    var history: LiveData<List<Food>>? = null
         private set
 
-    val foodsDTO: TablesDAO by lazy {
+    val dao: TablesDAO by lazy {
         getApplication<NutritionTrackerApp>().ediblesDB.getDAO()
     }
 
-    fun loadHistory() : LiveData<List<Food>?> {
+    fun loadHistory() : LiveData<List<Food>> {
         val result = doAsyncWithResult {
-            foodsDTO.getAll().map {
+            dao.getAll().map {
                 it.toFood()
             }
         }
-        history = result.value
+        history = result
         return result
     }
 
     fun getValues(){
-        NutritionTrackerRepo(foodsDTO).getLatestFoodFromDB {
+        loadHistory()
+        NutritionTrackerRepo(dao).getLatestFoodFromDB {
             it.onSuccess {
                 log(it.toString())
             }
         }
+    }
+
+    fun getValues2() : List<Food>?{
+        return NutritionTrackerRepo(dao).getAll()
     }
 }
