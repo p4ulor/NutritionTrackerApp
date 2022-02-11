@@ -39,7 +39,6 @@ interface TablesDAO { // Data Access Object, provides methods that your app can 
     @Query("SELECT * FROM FOODS ORDER BY name DESC LIMIT :count") //https://stackoverflow.com/questions/31016070/how-to-use-substring-in-rawquery-android
     fun getLast(count: Int) : List<FoodsTable>
 
-
 }
 
 @Database(entities = [FoodsTable::class/*, MealsTable::class*/], version = 1) //creates DB schema

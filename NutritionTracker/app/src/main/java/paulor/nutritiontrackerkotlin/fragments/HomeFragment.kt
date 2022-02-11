@@ -22,16 +22,9 @@ class HomeFragment : Fragment() {
 
         layout.button.setOnClickListener {
             viewModel.getValuesToLog()
+            viewModel.parse("https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2")
         }
 
         return root
     }
-}
-
-class HomeViewModel : ViewModel() {
-
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is home Fragment"
-    }
-    val text: LiveData<String> = _text
 }
