@@ -5,7 +5,7 @@ import androidx.room.*
 @Entity(tableName = "FOODS")
 data class FoodsTable (
     @PrimaryKey val name: String,
-    val values: FloatArray
+    val values: Array<Nutrient>
 ) {
     fun toFood() = Food(
         name = this.name,
@@ -48,25 +48,35 @@ abstract class EdiblesDataBase : RoomDatabase(){
 }
 
 @ProvidedTypeConverter
-class Converters {
+class Converters { // https://stackoverflow.com/questions/52693954/android-room-to-persist-complex-objects/52695045   https://developer.android.com/training/data-storage/room/referencing-data
     @TypeConverter
-    fun stringToFloatArray(values: String): FloatArray {
+    fun stringToFloatArray(values: String) : FloatArray {
         val list = values.split(" ")
-        val ret = FloatArray(list.size)
-        ret.forEachIndexed{ index, _ ->
-            ret[index] = list[index].toFloat()
+        val floats = FloatArray(list.size)
+        floats.forEachIndexed{ index, _ ->
+            floats[index] = list[index].toFloat()
         }
-        return ret
+        return floats
     }
 
     @TypeConverter
-    fun floatArrayToString(values: FloatArray): String {
+    fun floatArrayToString(values: FloatArray) : String {
         val sb = StringBuilder()
         values.forEach {
             sb.append(it).append(" ")
         }
         sb.deleteCharAt(sb.length-1)
         return sb.toString()
+    }
+
+    @TypeConverter
+    fun nutrientToString(nutrient: Array<Nutrient>) : String {
+        return nutrient.toString()
+    }
+
+    @TypeConverter
+    fun nutrientStringToNutrient(nutrient: String) : Array<Nutrient> {
+        return arrayOf(Nutrient(Nutrients.CAL, 20f, Unit.g))
     }
 }
 

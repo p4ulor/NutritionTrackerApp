@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,12 +13,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import ch.qos.logback.classic.spi.CallerData.extract
-import it.skrape.core.htmlDocument
-import it.skrape.fetcher.HttpFetcher
-import it.skrape.fetcher.Method
-import it.skrape.fetcher.response
-import it.skrape.fetcher.skrape
+import com.gargoylesoftware.htmlunit.WebClient
+import com.gargoylesoftware.htmlunit.html.HtmlDivision
+import com.gargoylesoftware.htmlunit.html.HtmlPage
 import paulor.nutritiontrackerkotlin.databinding.ActivityMainBinding
 import paulor.nutritiontrackerkotlin.model.*
 
@@ -92,7 +88,47 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun getFood() = getNuts()
+    fun getFood() {
+        WebClient().use { webClient ->
+            webClient.options.isThrowExceptionOnScriptError = false
+            webClient.options.isCssEnabled = false
+            webClient.options.isUseInsecureSSL = true
+
+            val page = webClient.getPage<HtmlPage>("https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2")
+            webClient.waitForBackgroundJavaScript(10000)
+            log(page.asXml())
+            val div = page.getHtmlElementById<HtmlDivision>("nf1 left")
+            log(div.toString())
+            val pageAsText = page.asNormalizedText()
+            log(pageAsText)
+        }
+    }
+
+
 
 
 }
+
+
+
+
+/*
+    JSOUP IS AN HTML SOURCE ONLY PARSER, DOESNT LOAD VALUES in <span>
+    Jsoup does not support JavaScript, and, because of this, any dynamically generated content or content which is added to the page after page load cannot be extracted from the page. If you need to extract content which is added to the page with JavaScript, there are a few alternative options:
+    https://sodocumentation.net/jsoup
+
+
+    doAsync {
+            Jsoup.connect("https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2").get().run {
+                    this.select("#NutritionInformationSlide .m-t13").forEachIndexed { i, element ->
+                        val name = element.getElementsByClass("nf1 left")
+                        val ammount = element.getElementsByClass("nf2 left").next()
+                        val unit = element.getElementsByClass("nf3 left")
+                        val percentDV = element.getElementsByClass("nf4 left")
+
+                        log("${name.text()}, ${ammount}, ${unit.text()}, ${percentDV.text()}")
+                        //titleAnchor.sel
+                    }
+                }
+        }
+     */

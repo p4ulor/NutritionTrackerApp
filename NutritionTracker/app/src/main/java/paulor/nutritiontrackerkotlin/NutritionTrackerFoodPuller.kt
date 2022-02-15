@@ -1,5 +1,6 @@
-package paulor.nutritiontrackerkotlin
 
+package paulor.nutritiontrackerkotlin
+/*
 import it.skrape.core.htmlDocument
 import it.skrape.fetcher.BrowserFetcher
 import it.skrape.fetcher.response
@@ -60,3 +61,4 @@ fun getNuts(): Map<String, List<Entry>> = skrape(BrowserFetcher) {
         }
     }
 }
+*/

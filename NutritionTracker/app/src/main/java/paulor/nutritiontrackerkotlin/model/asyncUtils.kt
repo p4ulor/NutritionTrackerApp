@@ -54,4 +54,4 @@ fun <T> doAsyncWithResult(action: () -> T) : MutableLiveData<T> {
     return result
 }
 
-fun doAsync(action: () -> Unit) = dataAccessExecutor.submit(action)!!
+fun doAsync(action: () -> kotlin.Unit) = dataAccessExecutor.submit(action)!!

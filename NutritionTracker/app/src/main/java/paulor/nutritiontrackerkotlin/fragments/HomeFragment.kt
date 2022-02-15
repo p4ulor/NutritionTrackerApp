@@ -23,10 +23,7 @@ class HomeFragment : Fragment() {
 
         layout.button.setOnClickListener {
             viewModel.getValuesToLog()
-            viewModel.getFood().forEach{
-                log(it.toString())
-            }
-
+            viewModel.getFood()
         }
 
         return root
