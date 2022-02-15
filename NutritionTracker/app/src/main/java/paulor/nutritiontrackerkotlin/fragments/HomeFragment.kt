@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import paulor.nutritiontrackerkotlin.MainActivityViewModel
 import paulor.nutritiontrackerkotlin.databinding.FragmentHomeBinding
+import paulor.nutritiontrackerkotlin.log
 
 class HomeFragment : Fragment() {
 
@@ -22,7 +23,10 @@ class HomeFragment : Fragment() {
 
         layout.button.setOnClickListener {
             viewModel.getValuesToLog()
-            viewModel.parse("https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2")
+            viewModel.getFood().forEach{
+                log(it.toString())
+            }
+
         }
 
         return root

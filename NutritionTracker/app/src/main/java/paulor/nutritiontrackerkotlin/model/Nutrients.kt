@@ -2,10 +2,11 @@ package paulor.nutritiontrackerkotlin.model
 
 // default dailyValues are set according to: https://www.fda.gov/food/new-nutrition-facts-label/daily-value-new-nutrition-and-supplement-facts-labels
 
-enum class Nutrients(val fullName: String, val group: Group, val dailyValue: Float) {
+enum class Nutrients(val fullName: String, val group: Group, var dailyValue: Float) {
     //5#, macros are all in g(grams)
     CAL("Calories", Group.A, 2000f),
     CARBS("Carbs", Group.A, 275f),
+    SUG("Sugar", Group.A,50f),
     PRO("Protein", Group.A, 50f),
     FAT("Fat", Group.A, 78f),
     FIB("Fiber", Group.A, 28f),
@@ -23,14 +24,17 @@ enum class Nutrients(val fullName: String, val group: Group, val dailyValue: Flo
     V1("Vitamin B1", Group.V, 1.2f),  //Thiamin
     V2("Vitamin B2", Group.V, 1.3f),  //Riboflavin
     V3("Vitamin B3", Group.V, 16f),   //Niacin
+    // V4 Choline https://iubmb.onlinelibrary.wiley.com/doi/pdf/10.1080/15216540500078939
     V5("Vitamin B5", Group.V, 5f),    //Pantothenic Acid
     V6("Vitamin B6", Group.V, 1.7f),  //Pyridoxine
 
     //  V7                                                       Biotin
     V9("Vitamin B9", Group.V, 0.4f),  //Folate (Folic Acid)
+    // V10 Para-aminobenzoic acid (PABA) https://www.healthline.com/nutrition/vitamin-b-10#what-it-is
+    // V11 similar to B9 https://rxharun.com/vitamin-b11-deficiency-symptoms-food-source-health-benefit/
     V12("Vitamin B12", Group.V, 0.0024f),  //Cobalamin
-    //Choline -> there's always trace amounts in everything / easy to take the %DV /  subjective %DV / kinda irrelevant
-    //Betaine -> there's always trace amounts in everything / easy to take the %DV /  subjective %DV / kinda irrelevant
+    //Choline, AKA Vitamin B4 -> there's always trace amounts in everything / easy to take the %DV /  un-established %DV / kinda irrelevant
+    //Betaine, functions very closely with choline,folic acid, vitamin B12 -> there's always trace amounts in everything / easy to take the %DV /  un-established %DV / kinda irrelevant
 
     //10# minerals
     CALC("Calcium", Group.M, 1300f),  //subjective and likely inflated by the dairy industry

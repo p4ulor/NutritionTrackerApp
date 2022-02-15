@@ -92,21 +92,7 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun parse(url: String) { // https://github.com/skrapeit/skrape.it  https://docs.skrape.it/docs/dsl/extracting-data-from-websites
-        skrape(HttpFetcher) {
-            request {
-                this.url = url
-                method = Method.GET
-                //headers = mapOf("Content-Type" to "application/json")
-                //body = """{"foo":"bar"}"""
-            }
-            response {
-                htmlDocument {
-                    log(this.wholeText)
-                }
-            }
-        }
+    fun getFood() = getNuts()
 
-    }
 
 }
