@@ -13,12 +13,17 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.gargoylesoftware.htmlunit.BrowserVersion
+
+//html unit
+/*import com.gargoylesoftware.htmlunit.BrowserVersion
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.HtmlDivision
-import com.gargoylesoftware.htmlunit.html.HtmlPage
+import com.gargoylesoftware.htmlunit.html.HtmlPage*/
 import paulor.nutritiontrackerkotlin.databinding.ActivityMainBinding
 import paulor.nutritiontrackerkotlin.model.*
+import java.io.IOException
+//bee
+import org.apache.http.client.fluent.*
 
 
 private const val TAG = "MainActivity"
@@ -63,13 +68,9 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
     var history: LiveData<List<Food>>? = null
         private set
 
-    val dao: TablesDAO by lazy {
-        getApplication<NutritionTrackerApp>().ediblesDB.getDAO()
-    }
-
-    val repo: NutritionTrackerRepo by lazy {
-        getApplication<NutritionTrackerApp>().repo
-    }
+    val context = getApplication<NutritionTrackerApp>()
+    val dao: TablesDAO by lazy { context.ediblesDB.getDAO() }
+    val repo: NutritionTrackerRepo by lazy { context.repo }
 
     fun loadHistory() : LiveData<List<Food>> {
         val result = doAsyncWithResult {
@@ -90,21 +91,58 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun getFood() {
-        WebClient(BrowserVersion.CHROME).use { webClient ->
-            webClient.options.isThrowExceptionOnScriptError = false
-            webClient.options.isCssEnabled = true
-            webClient.options.isUseInsecureSSL = true
-            webClient.options.isJavaScriptEnabled = true
+        doAsync {
+            /*WebClient(BrowserVersion.CHROME).use { webClient ->
+                //webClient.options.isThrowExceptionOnScriptError = false
+                //webClient.options.isJavaScriptEnabled = true
+                //webClient.options.isCssEnabled = true //if false, it crashes
+                //webClient.options.isUseInsecureSSL = true
 
-            val page = webClient.getPage<HtmlPage>("https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2")
-            webClient.waitForBackgroundJavaScript(10000)
-            log(page.asXml())
-            val div = page.getHtmlElementById<HtmlDivision>("nf1 left")
-            log(div.toString())
-            val pageAsText = page.asNormalizedText()
-            log(pageAsText)
+                //webClient.waitForBackgroundJavaScript(20000)
+                log("We runnin'")
+                val page = webClient.getPage<HtmlPage>("https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2")
+                //Thread.sleep(21_000)
+                log(page.asXml())
+                val div = page.getHtmlElementById<HtmlDivision>("nf1 left")
+                log(div.toString())
+                val pageAsText = page.asNormalizedText()
+                log(pageAsText)
+                log("I waited")
+            }*/
+            try {
+
+                // Create request
+                val content: Content = Request.Get("https://app.scrapingbee.com/api/v1/?api_key=QWNF6FHPUCKMJ9Z7CCZ4V92J1RQAV26YMT9TC4GHCABJ5E7ZI87HR1V6P3HDEFIP2GY78Z18EWJW95P0&url=http%3A%2F%2Fhttpbin.org%2Fanything%3Fjson") // Fetch request and return content
+                    .execute().returnContent()
+
+                // Print content
+                log(content.asString())
+            } catch (e: IOException) {
+                log(e.toString())
+            }
+
         }
     }
+
+    /*fun URLRequest(url: String, callback: (Result<String>) -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+        val responseListener = Response.Listener<String> { response ->
+            log(response.toString())
+            val result = Result.success(response.toString())
+            callback(result)
+            log("Response received")
+        }
+
+        val errorListener = Response.ErrorListener {
+            log("Connection error")
+            val result = Result.failure<String>(Error())
+            callback(result)
+        }
+
+        val stringRequest = StringRequest(Request.Method.GET, url, responseListener, errorListener)
+        queue.add(stringRequest)
+        log("Request finished")
+    }*/
 
 
 
