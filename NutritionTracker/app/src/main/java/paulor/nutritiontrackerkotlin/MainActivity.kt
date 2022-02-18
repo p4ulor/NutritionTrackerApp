@@ -13,6 +13,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.gargoylesoftware.htmlunit.BrowserVersion
 import com.gargoylesoftware.htmlunit.WebClient
 import com.gargoylesoftware.htmlunit.html.HtmlDivision
 import com.gargoylesoftware.htmlunit.html.HtmlPage
@@ -89,10 +90,11 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun getFood() {
-        WebClient().use { webClient ->
+        WebClient(BrowserVersion.CHROME).use { webClient ->
             webClient.options.isThrowExceptionOnScriptError = false
-            webClient.options.isCssEnabled = false
+            webClient.options.isCssEnabled = true
             webClient.options.isUseInsecureSSL = true
+            webClient.options.isJavaScriptEnabled = true
 
             val page = webClient.getPage<HtmlPage>("https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2")
             webClient.waitForBackgroundJavaScript(10000)
@@ -107,9 +109,8 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
 
 
 
+
 }
-
-
 
 
 /*
@@ -132,3 +133,29 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
                 }
         }
      */
+
+
+/*
+    ALSO DOESNT LOAD javascript content
+
+    fun scrape() {
+        doAsync {
+            val httpsUrl = "https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2"
+            try {
+                val url = URL(httpsUrl)
+                val con: HttpsURLConnection = url.openConnection() as HttpsURLConnection
+                println("****** Content of the URL ********")
+                val br = BufferedReader(InputStreamReader(con.getInputStream()))
+                var input: String?
+                while (br.readLine().also { input = it } != null) {
+                    log(input.toString())
+                }
+                br.close()
+            } catch (e: MalformedURLException) {
+                e.printStackTrace()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+    }
+ */
