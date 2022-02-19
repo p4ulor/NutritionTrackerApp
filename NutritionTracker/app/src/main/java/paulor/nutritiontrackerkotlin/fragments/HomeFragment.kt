@@ -8,9 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 import paulor.nutritiontrackerkotlin.MainActivityViewModel
 import paulor.nutritiontrackerkotlin.databinding.FragmentHomeBinding
 import paulor.nutritiontrackerkotlin.log
+import paulor.nutritiontrackerkotlin.model.doAsync
 
 class HomeFragment : Fragment() {
 
@@ -24,8 +26,10 @@ class HomeFragment : Fragment() {
         layout.button.setOnClickListener {
             viewModel.getValuesToLog()
             viewModel.getFood()
+
         }
 
         return root
     }
+
 }

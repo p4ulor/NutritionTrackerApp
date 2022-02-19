@@ -2,10 +2,11 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots"}
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots"} //this allows to access implementation/packages that have the suffix "snapshot"
         mavenCentral()
         jcenter() // Warning: this repository is going to shut down soon
     }
+
 }
 rootProject.name = "NutritionTracker"
 include ':app'

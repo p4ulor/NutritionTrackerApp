@@ -9,21 +9,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 
-//html unit
-/*import com.gargoylesoftware.htmlunit.BrowserVersion
-import com.gargoylesoftware.htmlunit.WebClient
-import com.gargoylesoftware.htmlunit.html.HtmlDivision
-import com.gargoylesoftware.htmlunit.html.HtmlPage*/
+import it.skrape.core.htmlDocument
+import it.skrape.fetcher.BrowserFetcher
+import it.skrape.fetcher.response
+import it.skrape.fetcher.skrape
+import it.skrape.selects.DocElement
+import it.skrape.selects.html5.div
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+
 import paulor.nutritiontrackerkotlin.databinding.ActivityMainBinding
 import paulor.nutritiontrackerkotlin.model.*
-import java.io.IOException
-//bee
-import org.apache.http.client.fluent.*
+
+
 
 
 private const val TAG = "MainActivity"
@@ -90,7 +94,7 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun getFood() {
+    fun getFood2() {
         doAsync {
             /*WebClient(BrowserVersion.CHROME).use { webClient ->
                 //webClient.options.isThrowExceptionOnScriptError = false
@@ -109,20 +113,71 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
                 log(pageAsText)
                 log("I waited")
             }*/
-            try {
-
-                // Create request
-                val content: Content = Request.Get("https://app.scrapingbee.com/api/v1/?api_key=QWNF6FHPUCKMJ9Z7CCZ4V92J1RQAV26YMT9TC4GHCABJ5E7ZI87HR1V6P3HDEFIP2GY78Z18EWJW95P0&url=http%3A%2F%2Fhttpbin.org%2Fanything%3Fjson") // Fetch request and return content
-                    .execute().returnContent()
-
-                // Print content
-                log(content.asString())
-            } catch (e: IOException) {
-                log(e.toString())
-            }
-
         }
     }
+
+    private val DocElement.categoryName: String
+        get() = div {
+            withAttribute = "align" to "center"
+            findFirst {
+                text
+            }
+        }
+
+    private fun DocElement.textOf(className: String) = div {
+        withClass = className
+        0 { text }
+    }
+
+    private val DocElement.entries: List<Entry>
+        get() = div {
+            withClass = "clearer"
+            findAll {
+                map { entry ->
+                    Entry(
+                        name = entry.textOf("nf1"),
+                        amount = entry.textOf("nf2"),
+                        unit = entry.textOf("nf3"),
+                        percentDv = entry.textOf("nf4"),
+                    )
+                }
+            }
+        }
+
+    suspend fun getNuts(): Map<String, List<Entry>> {
+        return skrape(BrowserFetcher) {
+            request {
+                url = "https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2"
+                timeout = 40_000
+            }
+            response {
+                htmlDocument {
+                    "#NutritionInformationSlide .m-t13" {
+                        findAll {
+                            associate {
+                                it.categoryName to it.entries
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun getFood() {
+        GlobalScope.launch {
+            getNuts().forEach {
+                log(it.toString())
+            }
+        }
+        /*viewModelScope.launch {
+            //didnt work, gave network on main exception
+        }*/
+    }
+
+
+
+
 
     /*fun URLRequest(url: String, callback: (Result<String>) -> Unit) {
         val queue = Volley.newRequestQueue(context)
@@ -150,6 +205,12 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
 
 }
 
+data class Entry(
+    val name: String,
+    val amount: String,
+    val unit: String,
+    val percentDv: String,
+)
 
 /*
     JSOUP IS AN HTML SOURCE ONLY PARSER, DOESNT LOAD VALUES in <span>
