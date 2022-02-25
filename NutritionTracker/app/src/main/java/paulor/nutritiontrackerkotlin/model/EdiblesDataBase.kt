@@ -1,25 +1,39 @@
 package paulor.nutritiontrackerkotlin.model
 
 import androidx.room.*
+import com.google.gson.Gson
+import kotlin.collections.ArrayList
 
 @Entity(tableName = "FOODS")
 data class FoodsTable (
-    @PrimaryKey val name: String,
-    val values: Array<Nutrient>
-) {
+    @PrimaryKey var name: String,
+    var nutrients: ArrayList<Nutrient>,
+    var price: Float,
+    var amount: Float,
+    var selfNutritionDataURL: String) {
+
     fun toFood() = Food(
         name = this.name,
-        values = this.values
+        nutrients = this.nutrients,
+        price = this.price,
+        amount = this.amount,
+        selfNutritionDataURL = this.selfNutritionDataURL
     )
 }
 
 @Entity(tableName = "MEALS")
 data class MealsTable (
-    @PrimaryKey val name: String,
-    val foods: Array<Food>,
-    val ammountGrams: IntArray
-) {
+    @PrimaryKey var name: String,
+    var foods: ArrayList<Food>,
+    var price: Float,
+    var ammount: Float) {
 
+    fun toMeal() = Meal(
+        name = this.name,
+        foods = this.foods,
+        price = this.price,
+        amount = this.price
+    )
 }
 
 @Dao
@@ -33,10 +47,10 @@ interface TablesDAO { // Data Access Object, provides methods that your app can 
     @Update
     fun update(foodsTable: FoodsTable)
 
-    @Query("SELECT * FROM FOODS ORDER BY name DESC") //to change color: Color scheme -> General -> Injected language fragment
+    @Query("SELECT * FROM FOODS ORDER BY name DESC")
     fun getAll() : List<FoodsTable>
 
-    @Query("SELECT * FROM FOODS ORDER BY name DESC LIMIT :count") //https://stackoverflow.com/questions/31016070/how-to-use-substring-in-rawquery-android
+    @Query("SELECT * FROM FOODS ORDER BY name DESC LIMIT :count")
     fun getLast(count: Int) : List<FoodsTable>
 
 }
@@ -49,6 +63,8 @@ abstract class EdiblesDataBase : RoomDatabase(){
 
 @ProvidedTypeConverter
 class Converters { // https://stackoverflow.com/questions/52693954/android-room-to-persist-complex-objects/52695045   https://developer.android.com/training/data-storage/room/referencing-data
+    private val mapper: Gson by lazy { Gson() }
+
     @TypeConverter
     fun stringToFloatArray(values: String) : FloatArray {
         val list = values.split(" ")
@@ -70,13 +86,23 @@ class Converters { // https://stackoverflow.com/questions/52693954/android-room-
     }
 
     @TypeConverter
-    fun nutrientToString(nutrient: Array<Nutrient>) : String {
-        return nutrient.toString()
+    fun nutrientToString(nutrient: ArrayList<Nutrient>) : String {
+        return Gson().toJson(nutrient)
     }
 
     @TypeConverter
-    fun nutrientStringToNutrient(nutrient: String) : Array<Nutrient> {
-        return arrayOf(Nutrient(Nutrients.CAL, 20f, Unit.g))
+    fun nutrientStringToFood(nutrient: String) : ArrayList<Nutrient> {
+        return Gson().fromJson(nutrient, ArrayList::class.java) as ArrayList<Nutrient>
+    }
+
+    @TypeConverter
+    fun mealToString(food: Meal) : String {
+        return Gson().toJson(food)
+    }
+
+    @TypeConverter
+    fun mealStringToNutrient(food: String) : Meal {
+        return Gson().fromJson(food, Meal::class.java)
     }
 }
 

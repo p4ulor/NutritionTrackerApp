@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId==android.R.id.home) {
             supportFragmentManager.popBackStack()
             if(supportFragmentManager.backStackEntryCount==0){
@@ -64,6 +64,16 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }*/
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
 
@@ -72,9 +82,9 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
     var history: LiveData<List<Food>>? = null
         private set
 
-    val context = getApplication<NutritionTrackerApp>()
-    val dao: TablesDAO by lazy { context.ediblesDB.getDAO() }
-    val repo: NutritionTrackerRepo by lazy { context.repo }
+    private val context = getApplication<NutritionTrackerApp>()
+    private val dao: TablesDAO by lazy { context.ediblesDB.getDAO() }
+    private val repo: NutritionTrackerRepo by lazy { context.repo }
 
     fun loadHistory() : LiveData<List<Food>> {
         val result = doAsyncWithResult {
@@ -89,30 +99,8 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
     fun getValuesToLog(){
         repo.getLatestFoodFromDB { result ->
             result.onSuccess {
-                log(it.toString())
+                log(it?.toFood().toString())
             }
-        }
-    }
-
-    fun getFood2() {
-        doAsync {
-            /*WebClient(BrowserVersion.CHROME).use { webClient ->
-                //webClient.options.isThrowExceptionOnScriptError = false
-                //webClient.options.isJavaScriptEnabled = true
-                //webClient.options.isCssEnabled = true //if false, it crashes
-                //webClient.options.isUseInsecureSSL = true
-
-                //webClient.waitForBackgroundJavaScript(20000)
-                log("We runnin'")
-                val page = webClient.getPage<HtmlPage>("https://nutritiondata.self.com/facts/nut-and-seed-products/3086/2")
-                //Thread.sleep(21_000)
-                log(page.asXml())
-                val div = page.getHtmlElementById<HtmlDivision>("nf1 left")
-                log(div.toString())
-                val pageAsText = page.asNormalizedText()
-                log(pageAsText)
-                log("I waited")
-            }*/
         }
     }
 
@@ -171,7 +159,7 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
             }
         }
         /*viewModelScope.launch {
-            //didnt work, gave network on main exception
+            //didnt work, gave network on main nexception
         }*/
     }
 

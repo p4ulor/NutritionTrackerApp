@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item>
+    <!-- https://stackoverflow.com/questions/55436477/how-to-make-selector-keep-the-pressed-state-till-clicked-again/55437343 -->
+    <item
+        android:state_selected="false"
+        android:state_pressed="false">
         <shape android:shape="rectangle">
             <solid android:color="#FAF6ED" />
+            <corners android:radius="40dp"/>
+            <stroke android:width="3px" android:color="@color/black"/>
+        </shape>
+    </item>
+
+    <item
+        android:state_selected="false"
+        android:state_pressed="true">
+    <shape android:shape="rectangle">
+        <solid android:color="#FFB200" />
+        <corners android:radius="40dp"/>
+        <stroke android:width="3px" android:color="@color/black"/>
+    </shape>
+    </item>
+
+    <item
+        android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#FFD677" />
             <corners android:radius="40dp"/>
             <stroke android:width="3px" android:color="@color/black"/>
         </shape>

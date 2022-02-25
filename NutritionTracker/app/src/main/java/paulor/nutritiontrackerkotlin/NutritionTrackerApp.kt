@@ -21,7 +21,7 @@ private const val DATEPATTERN = "dd/M/yyyy" //The 'M' must be uppercase or it wi
 class NutritionTrackerApp : Application() {
 
     val ediblesDB: EdiblesDataBase by lazy {
-        Room.databaseBuilder(this, EdiblesDataBase::class.java, "edibles"/*DB key*/).addTypeConverter(Converters()).build()
+        Room.databaseBuilder(this, EdiblesDataBase::class.java, "edibles").addTypeConverter(Converters()).build()
     }
 
     val repo: NutritionTrackerRepo by lazy {

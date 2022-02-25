@@ -1,5 +1,7 @@
 package paulor.nutritiontrackerkotlin.views
 
+import android.graphics.Color
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +14,7 @@ class FoodsAndMealsAdapter(
     private var allFoods: List<Food>,
     private val itemClickedListener: OnItemClickListener
     ) : RecyclerView.Adapter<HistoryItemViewHolder>() { // a view that will create tuples that ammount to only filling up the whole screen, and that constant number of views will be reused when scrolling through all the tuples
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryItemViewHolder { //creates View tuples/holders. It's called by the layout manager when it needs a new view
         val view = LayoutInflater.from(parent.context).inflate(R.layout.food_or_meal_tuple, parent, false)
@@ -42,14 +45,20 @@ class FoodsAndMealsAdapter(
  */
 class HistoryItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) { //receives a view and adds properties to the view
     private val name = itemView.findViewById<TextView>(R.id.name)
+    var isSelected = false
 
     fun bindTo(food: Food, itemClickedListener: OnItemClickListener) { //Binds this view holder to the given quote item
         name.text = food.name
-
+        itemView.setOnLongClickListener {
+            it.isSelected = !it.isSelected
+            true
+        }
         itemView.setOnClickListener {
             itemClickedListener.onItemClicked(food, adapterPosition)
         }
     }
+
+
 }
 
 interface OnItemClickListener{
