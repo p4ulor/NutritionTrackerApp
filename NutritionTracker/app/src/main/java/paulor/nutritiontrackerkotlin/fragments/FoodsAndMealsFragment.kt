@@ -1,9 +1,6 @@
 package paulor.nutritiontrackerkotlin.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -15,13 +12,17 @@ import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import paulor.nutritiontrackerkotlin.MainActivityViewModel
-import paulor.nutritiontrackerkotlin.R
 import paulor.nutritiontrackerkotlin.databinding.FragmentFoodsAndMealsBinding
 import paulor.nutritiontrackerkotlin.log
 import paulor.nutritiontrackerkotlin.model.Food
 import paulor.nutritiontrackerkotlin.toast
 import paulor.nutritiontrackerkotlin.views.FoodsAndMealsAdapter
 import paulor.nutritiontrackerkotlin.views.OnItemClickListener
+
+import android.view.ContextMenu.ContextMenuInfo
+import android.content.ClipData.Item
+import android.view.*
+import paulor.nutritiontrackerkotlin.R
 
 class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
 
@@ -47,13 +48,13 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
 
     override fun onStart() {
         super.onStart()
-        log("onStart_")
+        log("onStart")
         viewModel.history?.observe(viewLifecycleOwner){
             recyclerView.adapter = FoodsAndMealsAdapter(it, this)
         }
     }
 
-    override fun onItemClicked(gameDTO: Food, holderPosition: Int) {
+    override fun onItemPressed(foodName: String, option: Int) {
         findNavController().navigate(R.id.action_food_and_meals_to_nutrition_facts)
         navOptions {
             anim {
@@ -61,5 +62,9 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
                 exit = android.R.animator.fade_out
             }
         }
+    }
+
+    override fun onItemClicked(foodName: String){
+        viewModel.repo.addFood4TodayTotal(foodName)
     }
 }

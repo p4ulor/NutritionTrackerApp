@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -43,8 +42,7 @@ class MainActivity : AppCompatActivity() {
         val navView: BottomNavigationView = layout.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.homeScreem, R.id.food_and_meals, R.id.tracklist
@@ -53,18 +51,6 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
-
-    /*override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId==android.R.id.home) {
-            supportFragmentManager.popBackStack()
-            if(supportFragmentManager.backStackEntryCount==0){
-                supportActionBar!!.setDisplayHomeAsUpEnabled(false)
-                supportActionBar!!.setHomeButtonEnabled(false)
-            }
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }*/
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
@@ -78,13 +64,14 @@ class MainActivity : AppCompatActivity() {
 }
 
 class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
-    private val webPageScrap =  MutableLiveData<String>("")
+    var todaysNutrition = Meal("TODAYS_TOTAL")
+    private val webPageScrap =  MutableLiveData("")
     var history: LiveData<List<Food>>? = null
         private set
 
     private val context = getApplication<NutritionTrackerApp>()
     private val dao: TablesDAO by lazy { context.ediblesDB.getDAO() }
-    private val repo: NutritionTrackerRepo by lazy { context.repo }
+    val repo: NutritionTrackerRepo by lazy { context.repo }
 
     fun loadHistory() : LiveData<List<Food>> {
         val result = doAsyncWithResult {
@@ -167,25 +154,7 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
 
 
 
-    /*fun URLRequest(url: String, callback: (Result<String>) -> Unit) {
-        val queue = Volley.newRequestQueue(context)
-        val responseListener = Response.Listener<String> { response ->
-            log(response.toString())
-            val result = Result.success(response.toString())
-            callback(result)
-            log("Response received")
-        }
 
-        val errorListener = Response.ErrorListener {
-            log("Connection error")
-            val result = Result.failure<String>(Error())
-            callback(result)
-        }
-
-        val stringRequest = StringRequest(Request.Method.GET, url, responseListener, errorListener)
-        queue.add(stringRequest)
-        log("Request finished")
-    }*/
 
 
 
@@ -246,3 +215,23 @@ data class Entry(
         }
     }
  */
+
+/*fun URLRequest(url: String, callback: (Result<String>) -> Unit) {
+        val queue = Volley.newRequestQueue(context)
+        val responseListener = Response.Listener<String> { response ->
+            log(response.toString())
+            val result = Result.success(response.toString())
+            callback(result)
+            log("Response received")
+        }
+
+        val errorListener = Response.ErrorListener {
+            log("Connection error")
+            val result = Result.failure<String>(Error())
+            callback(result)
+        }
+
+        val stringRequest = StringRequest(Request.Method.GET, url, responseListener, errorListener)
+        queue.add(stringRequest)
+        log("Request finished")
+    }*/

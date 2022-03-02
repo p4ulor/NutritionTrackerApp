@@ -51,7 +51,7 @@ fun getTodaysDate(): String {
     return s.toString()
 }
 
-fun convertToDate(date: String?): java.sql.Date {
+fun convertToDate(date: String): java.sql.Date {
     val df: DateFormat = SimpleDateFormat(DATEPATTERN)
     return java.sql.Date(df.parse(date).time)
 }
