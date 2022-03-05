@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="50dp"
+    tools:context=".fragments.EdibleFactsFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nutrientsListRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="600dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/addNutrientButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:listitem="@layout/nutrient_tuple" />
+
+    <Button
+        android:id="@+id/addNutrientButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_style"
+        android:text="Add another nutrient"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/amountNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="6"
+        android:hint="0.0"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/priceNumber" />
+
+    <TextView
+        android:id="@+id/amountText"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginEnd="8dp"
+        android:editable="false"
+        android:gravity="center|right"
+        android:text="Amount"
+        app:layout_constraintBottom_toBottomOf="@+id/amountNumber"
+        app:layout_constraintEnd_toStartOf="@+id/amountNumber"
+        app:layout_constraintTop_toTopOf="@+id/amountNumber" />
+
+    <TextView
+        android:id="@+id/priceText"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center|right"
+        android:text="Price"
+        app:layout_constraintBottom_toBottomOf="@+id/priceNumber"
+        app:layout_constraintEnd_toStartOf="@+id/priceNumber"
+        app:layout_constraintTop_toTopOf="@+id/priceNumber" />
+
+    <EditText
+        android:id="@+id/priceNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:ems="6"
+        android:hint="0.0"
+        android:inputType="numberDecimal"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/unitSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Units"
+        app:layout_constraintEnd_toStartOf="@+id/priceText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/commentText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:hint="comment"
+        app:layout_constraintBottom_toTopOf="@+id/nutrientsListRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/amountText" />
+
+    <ImageView
+        android:id="@+id/foodLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/ic_link"
+        app:layout_constraintEnd_toStartOf="@+id/amountText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/unitSpinner" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="4dp"
+        android:background="@color/blueIcon"
+        app:layout_constraintBottom_toTopOf="@+id/nutrientsListRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

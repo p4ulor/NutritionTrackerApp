@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_foods_and_meals" >
         <action
             android:id="@+id/action_food_and_meals_to_nutrition_facts"
-            app:destination="@id/nutrition_facts" />
+            app:destination="@id/edible_facts" />
     </fragment>
 
     <fragment
@@ -28,12 +28,12 @@
         tools:layout="@layout/fragment_tracklist" >
         <action
             android:id="@+id/action_tracklist_to_nutrition_facts"
-            app:destination="@id/nutrition_facts" />
+            app:destination="@id/edible_facts" />
     </fragment>
 
     <fragment
-        android:id="@+id/nutrition_facts"
-        android:name="paulor.nutritiontrackerkotlin.fragments.NutritionFactsFragment"
-        android:label="Nutrition facts"
-        tools:layout="@layout/fragment_nutrition_facts" />
+        android:id="@+id/edible_facts"
+        android:name="paulor.nutritiontrackerkotlin.fragments.EdibleFactsFragment"
+        android:label="Edible facts"
+        tools:layout="@layout/fragment_edible_facts" />
 </navigation>

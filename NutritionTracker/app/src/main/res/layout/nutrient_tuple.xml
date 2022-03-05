@@ -19,7 +19,7 @@
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="24sp"
-        tools:text="NutrientName" />
+        tools:text="NutrientOrFood" />
 
     <LinearLayout
         android:layout_width="70dp"

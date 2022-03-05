@@ -4,7 +4,6 @@ import paulor.nutritiontrackerkotlin.model.*
 
 
 private const val TAG = "Repo"
-const val TODAYS_TOTAL_MEAL = "TodaysTotal"
 
 class NutritionTrackerRepo(private val dao: TablesDAO) {
 
@@ -25,7 +24,6 @@ class NutritionTrackerRepo(private val dao: TablesDAO) {
     }
 
     fun putMealTableInDB(meal: MealsTable) : Boolean {
-        if(meal.name==TODAYS_TOTAL_MEAL) false
         doAsync {
             dao.insert(meal)
         }
@@ -34,7 +32,7 @@ class NutritionTrackerRepo(private val dao: TablesDAO) {
 
     fun getAllWith(name: String?): List<Food>? {
         val result = doAsyncWithResult {
-            dao.getAll().map {
+            dao.getAllFoods().map {
                 it.toFood()
             }
         }.value
@@ -43,9 +41,9 @@ class NutritionTrackerRepo(private val dao: TablesDAO) {
 
     fun addFood4TodayTotal(foodName: String){
         doAsync {
-            val total = dao.getMeal(TODAYS_TOTAL_MEAL).toMeal()
+            /*val total = dao.getMeal(TODAYS_TOTAL_MEAL).toMeal()
             total.addFood(dao.getFood(foodName).toFood())
-            dao.insert(total.toMealsTable())
+            dao.insert(total.toMealsTable())*/
         }
     }
 }

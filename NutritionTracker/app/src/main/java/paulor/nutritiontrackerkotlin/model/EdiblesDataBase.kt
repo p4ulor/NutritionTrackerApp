@@ -12,7 +12,7 @@ data class FoodsTable (
     var amount: Float = 0f,
     var unit: EdibleUnit = EdibleUnit.G,
     var comment: String = "",
-    var selfNutritionDataURL: String) {
+    var selfNutritionDataURL: String = "") {
 
     fun toFood() = Food(name, nutrients, price, amount, unit, comment, selfNutritionDataURL)
 }
@@ -29,13 +29,27 @@ data class MealsTable (
     fun toMeal() = Meal(name, foods, price, ammount, unit, comment)
 }
 
+@Entity(tableName = "TRACK")
+data class TrackTable (
+    @PrimaryKey var date: String,
+    var foods: ArrayList<Food>? = null,
+    var meals: ArrayList<Meal>? = null,
+    var price: Float = 0f,
+    var comment: String = "") {
+
+    fun toTrack() = Track(date, foods, meals, price, comment)
+}
+
 @Dao
 interface TablesDAO { // Data Access Object, provides methods that your app can use to query, update, insert, and delete data in the database
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(foodsTable: FoodsTable)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(foodsTable: MealsTable)
+    fun insert(mealsTable: MealsTable)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(trackTable: TrackTable)
 
     @Delete
     fun delete(foodsTable: FoodsTable)
@@ -44,7 +58,10 @@ interface TablesDAO { // Data Access Object, provides methods that your app can 
     fun update(foodsTable: FoodsTable)
 
     @Query("SELECT * FROM FOODS ORDER BY name DESC")
-    fun getAll() : List<FoodsTable>
+    fun getAllFoods() : List<FoodsTable>
+
+    @Query("SELECT * FROM MEALS ORDER BY name DESC")
+    fun getAllMeals() : List<MealsTable>
 
     @Query("SELECT * FROM FOODS ORDER BY name DESC LIMIT :count")
     fun getLast(count: Int) : List<FoodsTable>
@@ -55,9 +72,11 @@ interface TablesDAO { // Data Access Object, provides methods that your app can 
     @Query("SELECT * FROM MEALS WHERE name=:name")
     fun getMeal(name: String) : MealsTable
 
+    @Query("SELECT * FROM TRACK WHERE date=:date")
+    fun getTrack(date: String) : TrackTable
 }
 
-@Database(entities = [FoodsTable::class, MealsTable::class], version = 1) //creates DB schema
+@Database(entities = [FoodsTable::class, MealsTable::class, TrackTable::class], version = 1) //creates DB schema
 @TypeConverters(Converters::class)
 abstract class EdiblesDataBase : RoomDatabase(){
     abstract fun getDAO() : TablesDAO
@@ -65,7 +84,7 @@ abstract class EdiblesDataBase : RoomDatabase(){
 
 @ProvidedTypeConverter
 class Converters { // https://stackoverflow.com/questions/52693954/android-room-to-persist-complex-objects/52695045   https://developer.android.com/training/data-storage/room/referencing-data
-    private val mapper: Gson by lazy { Gson() }
+    private val mapper = Gson()
 
     @TypeConverter
     fun stringToFloatArray(values: String) : FloatArray {
@@ -89,32 +108,42 @@ class Converters { // https://stackoverflow.com/questions/52693954/android-room-
 
     @TypeConverter
     fun nutrientToString(nutrient: ArrayList<Nutrient>?) : String {
-        return Gson().toJson(nutrient)
+        return mapper.toJson(nutrient)
     }
 
     @TypeConverter
     fun nutrientStringToFood(nutrient: String) : ArrayList<Nutrient> {
-        return Gson().fromJson(nutrient, ArrayList::class.java) as ArrayList<Nutrient>
+        return mapper.fromJson(nutrient, ArrayList::class.java) as ArrayList<Nutrient>
     }
 
     @TypeConverter
     fun edibleUnitToString(unit: EdibleUnit) : String {
-        return Gson().toJson(unit)
+        return mapper.toJson(unit)
     }
 
     @TypeConverter
     fun edibleUnitStringToEdibleUnit(unit: String) : EdibleUnit {
-        return Gson().fromJson(unit, EdibleUnit::class.java)
+        return mapper.fromJson(unit, EdibleUnit::class.java)
     }
 
     @TypeConverter
     fun arrayListFoodToString(food: ArrayList<Food>) : String {
-        return Gson().toJson(food)
+        return mapper.toJson(food)
     }
 
     @TypeConverter
     fun foodStringToArrayListFood(food: String) : ArrayList<Food> {
-        return Gson().fromJson(food, ArrayList::class.java) as ArrayList<Food>
+        return mapper.fromJson(food, ArrayList::class.java) as ArrayList<Food>
+    }
+
+    @TypeConverter
+    fun arrayListMealToString(meal: ArrayList<Meal>) : String {
+        return mapper.toJson(meal)
+    }
+
+    @TypeConverter
+    fun foodStringToArrayListMeal(meal: String) : ArrayList<Meal> {
+        return mapper.fromJson(meal, ArrayList::class.java) as ArrayList<Meal>
     }
 }
 

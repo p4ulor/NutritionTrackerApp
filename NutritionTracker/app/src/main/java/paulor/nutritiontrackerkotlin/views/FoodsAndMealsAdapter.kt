@@ -4,6 +4,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import paulor.nutritiontrackerkotlin.R
+import paulor.nutritiontrackerkotlin.log
 import paulor.nutritiontrackerkotlin.model.Food
 
 
@@ -20,11 +21,10 @@ class FoodsAndMealsAdapter(
 
     override fun onBindViewHolder(holder: FoodItemViewHolder, position: Int) { // re-use lists. Is called more than onCreateViewHolder
         holder.bindTo(allFoods[position])
+        log("Binded")
     }
 
     override fun getItemCount(): Int = allFoods.size
-
-    //---Above methods are obligated to be overrated
 
     fun loadNewHistoryData(newHistory: List<Food>){
         allFoods = newHistory
@@ -42,7 +42,6 @@ class FoodsAndMealsAdapter(
  */
 class FoodItemViewHolder(itemView: View, var itemClickedListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener { //receives a view and adds properties to the view
     private val name = itemView.findViewById<TextView>(R.id.name)
-
 
     fun bindTo(food: Food) { //Binds this view holder to the given quote item
         name.text = food.name

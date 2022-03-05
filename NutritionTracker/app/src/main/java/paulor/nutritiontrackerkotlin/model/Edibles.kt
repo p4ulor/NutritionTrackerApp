@@ -6,7 +6,7 @@ data class Food (
     var name: String,
     var nutrients: ArrayList<Nutrient>? = null,
     var price: Float = 0f,
-    var amount: Float = 0f,
+    var amount: Float = 0f, //used for making up Meals and making calculation for Tracking
     var unit: EdibleUnit = EdibleUnit.G,
     var comment: String = "",
     var selfNutritionDataURL: String = "") {
@@ -47,6 +47,29 @@ data class Meal(
     fun toMealsTable() = MealsTable(name, foods, price, amount, unit, comment)
 }
 
+data class Track(
+    var date: String,
+    var foods: ArrayList<Food>? = null,
+    var meals: ArrayList<Meal>? = null,
+    var price: Float = 0f,
+    var comment: String = "") {
+
+    fun addFood(food: Food) {
+        if(foods==null) foods = ArrayList()
+        foods?.add(food)
+    }
+
+    fun addMeal(meal: Meal) {
+        if(meals==null) meals = ArrayList()
+        meals?.add(meal)
+    }
+
+    /*fun sumUpProperties() : Meal {
+        //todo
+        return this
+    }*/
+}
+
 // a Food's Nutrient, must have it's amount appropriated/rationed to the Food's quantity in grams
 data class Nutrient(var nutrient: Compound, var amount: Float) {
     companion object {
@@ -59,12 +82,22 @@ data class Nutrient(var nutrient: Compound, var amount: Float) {
     }
 }
 
-enum class EdibleUnit (fullName: String) {
+enum class EdibleUnit (val fullName: String) {
     U("Unit"),
     G("Grams"),
     MG("Milligrams"),
     MCG("Micrograms"),
     IU("International Unit");
+
+    companion object {
+        fun getAsStringArray() : ArrayList<String> {
+            val list = ArrayList<String>()
+            values().forEach {
+                list.add(it.fullName)
+            }
+            return list
+        }
+    }
 }
 
 enum class LiquidUnits {

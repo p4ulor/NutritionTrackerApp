@@ -26,9 +26,6 @@ import kotlinx.coroutines.launch
 import paulor.nutritiontrackerkotlin.databinding.ActivityMainBinding
 import paulor.nutritiontrackerkotlin.model.*
 
-
-
-
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
@@ -66,21 +63,22 @@ class MainActivity : AppCompatActivity() {
 class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
     var todaysNutrition = Meal("TODAYS_TOTAL")
     private val webPageScrap =  MutableLiveData("")
-    var history: LiveData<List<Food>>? = null
+    var foods: LiveData<List<Food>>? = null
+        private set
+
+    var meals: LiveData<List<Meal>>? = null
+        private set
+
+    var track: LiveData<List<Track>>? = null
         private set
 
     private val context = getApplication<NutritionTrackerApp>()
     private val dao: TablesDAO by lazy { context.ediblesDB.getDAO() }
     val repo: NutritionTrackerRepo by lazy { context.repo }
 
-    fun loadHistory() : LiveData<List<Food>> {
-        val result = doAsyncWithResult {
-            dao.getAll().map {
-                it.toFood()
-            }
-        }
-        history = result
-        return result
+    fun loadHistory() {
+        foods = doAsyncWithResult { dao.getAllFoods().map { it.toFood() } }
+        meals = doAsyncWithResult { dao.getAllMeals().map { it.toMeal() } }
     }
 
     fun getValuesToLog(){
@@ -149,17 +147,6 @@ class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
             //didnt work, gave network on main nexception
         }*/
     }
-
-
-
-
-
-
-
-
-
-
-
 }
 
 data class Entry(
