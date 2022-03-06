@@ -14,6 +14,8 @@ import paulor.nutritiontrackerkotlin.databinding.FragmentHomeBinding
 import paulor.nutritiontrackerkotlin.log
 import paulor.nutritiontrackerkotlin.model.doAsync
 
+private const val TAG = "HomeFragment"
+
 class HomeFragment : Fragment() {
 
     private lateinit var layout: FragmentHomeBinding

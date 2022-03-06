@@ -16,6 +16,10 @@ import paulor.nutritiontrackerkotlin.views.OnItemClickListener
 
 import android.view.*
 import paulor.nutritiontrackerkotlin.R
+import paulor.nutritiontrackerkotlin.mapper
+import paulor.nutritiontrackerkotlin.model.Food
+
+private const val TAG = "FoodsAndMealsFragment"
 
 class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
 
@@ -47,9 +51,9 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
         }
     }
 
-    override fun onItemPressed(foodName: String, option: Int) {
+    override fun onItemPressed(food: Food, option: Int) {
         val bundle = Bundle()
-        bundle.putString("some_argument", "some_value")
+        bundle.putString("food", mapper.toJson(food))
         findNavController().navigate(R.id.action_food_and_meals_to_nutrition_facts, bundle)
         navOptions {
             anim {

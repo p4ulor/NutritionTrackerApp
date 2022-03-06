@@ -5,9 +5,11 @@ import paulor.nutritiontrackerkotlin.NutritionTrackerRepo
 private val foods = arrayOf(
 
     FoodsTable(name = "Oats",
-        nutrients = arrayListOf(Nutrient(Compound.CAL, 379f)),
-        price = 0f,
+        nutrients = arrayListOf(Nutrient(Compound.CAL, 379f), Nutrient(Compound.CARBS, 226f),
+            Nutrient(Compound.VA, 100f), Nutrient(Compound.V12, 3000f)),
+        price = 2f,
         amount = 0f,
+        comment = "https://www.continente.pt/produto/flocos-aveia-finos-integral-pack-poupanca-continente-equilibrio-7246729.html",
         selfNutritionDataURL = "https://nutritiondata.self.com/facts/breakfast-cereals/1597/2"
     ),
 

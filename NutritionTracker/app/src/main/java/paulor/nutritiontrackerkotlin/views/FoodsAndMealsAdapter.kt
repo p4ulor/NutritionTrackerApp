@@ -31,19 +31,19 @@ class FoodsAndMealsAdapter(
         notifyDataSetChanged()
     }
 
-    fun getGameDTO(position: Int) : Food? {
+    fun getFood(position: Int) : Food? {
         return if (position in 1 until itemCount) allFoods?.get(position) else null
     }
 }
 
-/*
- * Implementation of the ViewHolder pattern. Its purpose is to eliminate the need for
+/* Implementation of the ViewHolder pattern. Its purpose is to eliminate the need for
  * executing findViewById each time a reference to a view's child is required.
  */
 class FoodItemViewHolder(itemView: View, var itemClickedListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView), View.OnCreateContextMenuListener { //receives a view and adds properties to the view
     private val name = itemView.findViewById<TextView>(R.id.name)
-
+    private lateinit var food: Food
     fun bindTo(food: Food) { //Binds this view holder to the given quote item
+        this.food = food
         name.text = food.name
         itemView.setOnLongClickListener {
             it.showContextMenu()
@@ -70,13 +70,13 @@ class FoodItemViewHolder(itemView: View, var itemClickedListener: OnItemClickLis
 
         when (menuItem.itemId) {
             1 -> {}
-            2 -> itemClickedListener.onItemPressed(name.text.toString(), 2)
+            2 -> itemClickedListener.onItemPressed(food, 2)
         }
         true
     }
 }
 
 interface OnItemClickListener {
-    fun onItemPressed(foodName: String, option: Int)
+    fun onItemPressed(food: Food, option: Int)
     fun onItemClicked(foodName: String)
 }

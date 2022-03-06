@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.room.Room
+import com.google.gson.Gson
 import paulor.nutritiontrackerkotlin.model.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -17,6 +18,7 @@ import java.util.*
 
 private const val TAG = "LOG_"
 private const val DATEPATTERN = "dd/M/yyyy" //The 'M' must be uppercase or it will read the minutes
+val mapper = Gson()
 
 class NutritionTrackerApp : Application() {
 
@@ -24,13 +26,10 @@ class NutritionTrackerApp : Application() {
         Room.databaseBuilder(this, EdiblesDataBase::class.java, "edibles").addTypeConverter(Converters()).build()
     }
 
-    val repo: NutritionTrackerRepo by lazy {
-        NutritionTrackerRepo(ediblesDB.getDAO())
-    }
+    val repo: NutritionTrackerRepo by lazy { NutritionTrackerRepo(ediblesDB.getDAO()) }
 
     override fun onCreate() {
-        super.onCreate()
-        log("App created")
+        log("App created"); super.onCreate()
         log("Initializing DB"); initializeDB(repo)
     }
 }

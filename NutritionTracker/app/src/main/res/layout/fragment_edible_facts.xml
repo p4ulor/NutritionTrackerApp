@@ -11,11 +11,12 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/nutrientsListRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="600dp"
+        android:layout_height="0dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/addNutrientButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/commentText"
         tools:listitem="@layout/nutrient_tuple" />
 
     <Button
@@ -35,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:editable="true"
         android:ems="6"
         android:hint="0.0"
         android:inputType="numberDecimal"
@@ -59,6 +61,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="8dp"
+        android:editable="false"
         android:gravity="center|right"
         android:text="Price"
         app:layout_constraintBottom_toBottomOf="@+id/priceNumber"
@@ -93,9 +96,10 @@
         android:id="@+id/commentText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:editable="true"
         android:gravity="center"
         android:hint="comment"
-        app:layout_constraintBottom_toTopOf="@+id/nutrientsListRecyclerView"
+        android:minHeight="48dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/amountText" />
@@ -109,17 +113,5 @@
         app:layout_constraintEnd_toStartOf="@+id/amountText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/unitSpinner" />
-
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="2dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="4dp"
-        android:background="@color/blueIcon"
-        app:layout_constraintBottom_toTopOf="@+id/nutrientsListRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

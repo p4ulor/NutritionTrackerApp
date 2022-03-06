@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import paulor.nutritiontrackerkotlin.MainActivityViewModel
 import paulor.nutritiontrackerkotlin.databinding.FragmentTracklistBinding
 
+private const val TAG = "TrackListFragment"
+
 class TrackListFragment : Fragment() {
 
     private lateinit var layout: FragmentTracklistBinding

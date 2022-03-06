@@ -2,6 +2,7 @@ package paulor.nutritiontrackerkotlin.model
 
 import androidx.room.*
 import com.google.gson.Gson
+import paulor.nutritiontrackerkotlin.mapper
 import kotlin.collections.ArrayList
 
 @Entity(tableName = "FOODS")
@@ -84,7 +85,6 @@ abstract class EdiblesDataBase : RoomDatabase(){
 
 @ProvidedTypeConverter
 class Converters { // https://stackoverflow.com/questions/52693954/android-room-to-persist-complex-objects/52695045   https://developer.android.com/training/data-storage/room/referencing-data
-    private val mapper = Gson()
 
     @TypeConverter
     fun stringToFloatArray(values: String) : FloatArray {
