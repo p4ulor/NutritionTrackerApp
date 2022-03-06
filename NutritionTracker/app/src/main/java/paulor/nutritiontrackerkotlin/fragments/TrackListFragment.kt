@@ -24,9 +24,6 @@ class TrackListFragment : Fragment() {
         layout = FragmentTracklistBinding.inflate(inflater, container, false)
         val root: View = layout.root
 
-        layout.addNewEdibleButton.setOnClickListener {
-
-        }
 
         return root
     }

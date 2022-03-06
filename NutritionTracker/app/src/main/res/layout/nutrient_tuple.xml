@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/historyTupleView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
-    android:orientation="horizontal"
+
+    android:background="@drawable/nutrient_tuple_style"
     android:paddingHorizontal="16dp"
-    android:paddingVertical="16dp"
-    android:background="@drawable/nutrient_tuple_style">
+    android:paddingVertical="16dp">
 
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="159dp"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:gravity="center"
         android:paddingEnd="5dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/grams"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="NutrientOrFood" />
 
     <NumberPicker
         android:id="@+id/grams"
-        android:layout_width="wrap_content"
-        android:layout_height="128dp"
-        android:scrollbarSize="1dp" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:scrollbarSize="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/dailyValue"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:layout_width="151dp"
-        android:layout_height="127dp"
-        android:layout_gravity="right"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/dailyValue"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textAlignment="gravity"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/unit"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1200" />
 
-        <TextView
-            android:id="@+id/dailyValue"
-            android:layout_width="match_parent"
-            android:layout_height="66dp"
-            android:gravity="center"
-            android:textAlignment="gravity"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="20sp"
-            tools:text="1200" />
-
-        <TextView
-            android:id="@+id/unit"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="20sp"
-            tools:text="120" />
-    </LinearLayout>
+    <TextView
+        android:id="@+id/unit"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dailyValue"
+        tools:text="MCG" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

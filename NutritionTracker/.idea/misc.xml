@@ -20,16 +20,16 @@
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/App/NutritionTrackerKotlin/app/src/main/res/menu/bottom_nav_menu.xml" value="0.209375" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/drawable/button_style.xml" value="0.13148148148148148" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/drawable/food_or_meal_tuple_style.xml" value="0.13148148148148148" />
-        <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/font/fonts.xml" value="0.1439814814814815" />
+        <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/font/fonts.xml" value="0.5" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/activity_main.xml" value="0.3140625" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/edible_facts_tuple.xml" value="0.18611111111111112" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/food_or_meal_tuple.xml" value="0.33" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/fragment_edible_facts.xml" value="0.3746505125815471" />
-        <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/fragment_foods_and_meals.xml" value="0.25" />
+        <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/fragment_foods_and_meals.xml" value="0.75" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/fragment_nutrition_facts.xml" value="0.18611111111111112" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/fragment_tracklist.xml" value="0.2" />
-        <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/nutrient_tuple.xml" value="0.33" />
+        <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/nutrient_tuple.xml" value="0.75" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/layout/tracklist_tuple.xml" value="0.67" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/menu/bottom_nav_menu.xml" value="0.209375" />
         <entry key="..\:/INTELI/GITHUB/MYREPOS/NutritionTrackerApp/NutritionTracker/app/src/main/res/menu/tuple_menu.xml" value="0.1" />

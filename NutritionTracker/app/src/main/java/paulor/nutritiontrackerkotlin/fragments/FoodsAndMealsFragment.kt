@@ -54,7 +54,7 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
     override fun onItemPressed(food: Food, option: Int) {
         val bundle = Bundle()
         bundle.putString("food", mapper.toJson(food))
-        findNavController().navigate(R.id.action_food_and_meals_to_nutrition_facts, bundle)
+        findNavController().navigate(R.id.action_food_and_meals_to_edible_facts, bundle)
         navOptions {
             anim {
                 enter = android.R.animator.fade_in

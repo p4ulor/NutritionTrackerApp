@@ -56,7 +56,7 @@ enum class Compound(val fullName: String, val group: Group, var dailyValue: Floa
     O6("Omega 6", Group.F, 420f, EdibleUnit.MG); //linoleic acid
 
     companion object {
-        val ammountOfCompounds = values().size
+        val size = values().size
         fun getCompound(string: String) : Compound? {
             values().forEach {
                 if(it.name==string) return it
