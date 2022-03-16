@@ -36,6 +36,7 @@ class NutritionTrackerApp : Application() {
 
 // UTILITY AND GLOBAL METHODS
 
+
 fun play(id: Int, ctx: Context) {
     val player = MediaPlayer.create(ctx, id)
     player.setOnCompletionListener { player.release() }

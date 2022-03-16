@@ -1,5 +1,6 @@
 package paulor.nutritiontrackerkotlin.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,6 +16,7 @@ import paulor.nutritiontrackerkotlin.views.FoodsAndMealsAdapter
 import paulor.nutritiontrackerkotlin.views.OnItemClickListener
 
 import android.view.*
+import android.widget.EditText
 import paulor.nutritiontrackerkotlin.R
 import paulor.nutritiontrackerkotlin.mapper
 import paulor.nutritiontrackerkotlin.model.Food
@@ -26,6 +28,7 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
     private lateinit var layout: FragmentFoodsAndMealsBinding
     private val viewModel: MainActivityViewModel by activityViewModels() //is a reference to the same instance of the view model of the activity that hosts this fragment
     lateinit var recyclerView: RecyclerView
+    lateinit var adapter: FoodsAndMealsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         log("onCreateView")
@@ -38,6 +41,24 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
         layout.addNewEdibleButton.setOnClickListener {
             viewModel.getValuesToLog()
             log(activity?.supportFragmentManager?.backStackEntryCount.toString())
+
+            val builder = AlertDialog.Builder(requireContext())
+            val inflater = requireActivity().layoutInflater
+            val dialogView = inflater.inflate(R.layout.alert_dialog_name, null)
+            val name = dialogView.findViewById<EditText>(R.id.foodName)
+            name.text.replace(0, 0, "")
+            builder.setView(dialogView)
+                .setMessage("Add edible")
+                .setPositiveButton("Done") { dialog, id ->
+                    val edible = Food(name.text.toString())
+                    viewModel.repo.putFoodTableInDB(edible.toFoodsTable())
+                    adapter.addFood(edible)
+                }
+                .setNegativeButton("Cancel") { dialog, id ->
+                    dialog.dismiss()
+                }
+
+            builder.create().show()
         }
 
         return root
@@ -47,7 +68,8 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
         super.onStart()
         log("onStart")
         viewModel.foods?.observe(viewLifecycleOwner){
-            recyclerView.adapter = FoodsAndMealsAdapter(it, this)
+            adapter = FoodsAndMealsAdapter(it as ArrayList<Food>, this)
+            recyclerView.adapter = adapter
         }
     }
 

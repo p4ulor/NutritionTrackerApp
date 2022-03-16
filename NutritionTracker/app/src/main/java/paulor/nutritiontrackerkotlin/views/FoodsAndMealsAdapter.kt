@@ -9,7 +9,7 @@ import paulor.nutritiontrackerkotlin.model.Food
 
 
 class FoodsAndMealsAdapter(
-    private var allFoods: List<Food>,
+    private var allFoods: ArrayList<Food>,
     private val itemClickedListener: OnItemClickListener
     ) : RecyclerView.Adapter<FoodItemViewHolder>() { // a view that will create tuples that ammount to only filling up the whole screen, and that constant number of views will be reused when scrolling through all the tuples
 
@@ -26,8 +26,13 @@ class FoodsAndMealsAdapter(
 
     override fun getItemCount(): Int = allFoods.size
 
-    fun loadNewHistoryData(newHistory: List<Food>){
+    fun loadNewHistoryData(newHistory: ArrayList<Food>){
         allFoods = newHistory
+        notifyDataSetChanged()
+    }
+
+    fun addFood(food: Food) {
+        allFoods.add(food)
         notifyDataSetChanged()
     }
 

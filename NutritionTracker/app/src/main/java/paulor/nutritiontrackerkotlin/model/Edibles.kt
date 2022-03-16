@@ -2,14 +2,22 @@ package paulor.nutritiontrackerkotlin.model
 
 import kotlin.collections.ArrayList
 
-data class Food (
+abstract class Edible(
     var name: String,
+    var price: Float,
+    var amount: Float, //used for making up Meals and making calculation for Tracking
+    var unit: EdibleUnit,
+    var comment: String
+)
+
+class Food ( // I'm using "class" and not "data class" to have the flexibility of using or not "var" in the constructor. Same for meal
+    foodName: String,
     var nutrients: ArrayList<Nutrient>? = null,
-    var price: Float = 0f,
-    var amount: Float = 0f, //used for making up Meals and making calculation for Tracking
-    var unit: EdibleUnit = EdibleUnit.G,
-    var comment: String = "",
-    var selfNutritionDataURL: String = "") {
+    price: Float = 0f,
+    amount: Float = 0f,
+    unit: EdibleUnit = EdibleUnit.G,
+    comment: String = "",
+    var selfNutritionDataURL: String = "") : Edible(foodName, price, amount, unit, comment) {
 
     fun addNutrient(nutrient: Nutrient){
         if(nutrients==null) nutrients = ArrayList()
@@ -17,22 +25,22 @@ data class Food (
     }
 
     fun sumUpProperties(food: Food) : Food {
-        //TODO
-        price = food.price
-        amount = food.amount
+        nutrients = Nutrient.sumUp(nutrients, food.nutrients)
+        price += food.price
+        amount += food.amount
         return this
     }
 
     fun toFoodsTable() = FoodsTable(name, nutrients, price, amount, unit, comment, selfNutritionDataURL)
 }
 
-data class Meal(
-    var name: String,
+class Meal(
+    mealName: String,
     var foods: ArrayList<Food>? = null,
-    var price: Float = 0f,
-    var amount: Float = 0f,
-    var unit: EdibleUnit = EdibleUnit.G,
-    var comment: String = "") {
+    price: Float = 0f,
+    amount: Float = 0f,
+    unit: EdibleUnit = EdibleUnit.G,
+    comment: String = "") : Edible(mealName, price, amount, unit, comment) {
 
     fun addFood(food: Food){
         if(foods==null) foods = ArrayList()
@@ -71,7 +79,7 @@ data class Track(
 }
 
 // a Food's Nutrient, must have it's amount appropriated/rationed to the Food's quantity in grams
-data class Nutrient(var nutrient: Compound, var amount: Float) {
+data class Nutrient(var compound: Compound, var amount: Float) {
     companion object {
         fun getAllWithZero() : ArrayList<Nutrient> {
             val compounds = Compound.values()
@@ -79,15 +87,40 @@ data class Nutrient(var nutrient: Compound, var amount: Float) {
             compounds.forEach { ret.add(Nutrient(it, 0f)) }
             return ret
         }
+
+        fun sumUp(nutrients1: ArrayList<Nutrient>?, nutrients2: ArrayList<Nutrient>?) : ArrayList<Nutrient>? {
+            if(nutrients1==null && nutrients2 == null) return null
+            return nutrients1 ?: nutrients2
+            nutrients1?.forEachIndexed { index, nutrient ->
+                if(nutrient == nutrients2?.get(index))
+                    nutrient.amount += nutrients2?.get(index).amount
+            }
+            return nutrients1
+        }
+
+        fun getCompounds(nutrients: ArrayList<Nutrient>) : ArrayList<Compound> {
+            val compounds = ArrayList<Compound>()
+            nutrients.forEach {
+                compounds.add(it.compound)
+            }
+            return compounds
+        }
     }
 }
 
-enum class EdibleUnit (val fullName: String) {
+interface UnitType {
+    val fullName: String
+}
+
+enum class EdibleUnit(override val fullName: String) : UnitType {
     U("Unit"),
     G("Grams"),
-    MG("Milligrams"),
-    MCG("Micrograms"),
-    IU("International Unit");
+
+    GAL("Gallon"),
+    OUN("Ounce"),
+    CUP("Coup"),
+    SPO("Spoon"),
+    LIT("Litter");
 
     companion object {
         fun getAsStringArray() : ArrayList<String> {
@@ -100,10 +133,8 @@ enum class EdibleUnit (val fullName: String) {
     }
 }
 
-enum class LiquidUnits {
-    Gallon,
-    Ounce,
-    Coup,
-    Spoon,
-    Liter
+enum class CompoundUnit(override val fullName: String) : UnitType {
+    MG("Milligrams"),
+    MCG("Micrograms"),
+    IU("International Unit")
 }

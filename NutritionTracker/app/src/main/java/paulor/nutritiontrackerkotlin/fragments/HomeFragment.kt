@@ -27,7 +27,7 @@ class HomeFragment : Fragment() {
 
         layout.button.setOnClickListener {
             viewModel.getValuesToLog()
-            viewModel.getFood()
+            //viewModel.getFood()
         }
 
         return root

@@ -75,7 +75,7 @@ dependencies {
     // To use Kotlin annotation processing tool (kapt)
     kapt "androidx.room:room-compiler:$roomVersion"
 
-    implementation("it.skrape:skrapeit:0-SNAPSHOT") // version number will stay - implementation may change ...
+    //implementation("it.skrape:skrapeit:0-SNAPSHOT") // version number will stay - implementation may change ...
 
 
 }

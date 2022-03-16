@@ -1,7 +1,6 @@
 package paulor.nutritiontrackerkotlin.model
 
 import androidx.room.*
-import com.google.gson.Gson
 import paulor.nutritiontrackerkotlin.mapper
 import kotlin.collections.ArrayList
 
