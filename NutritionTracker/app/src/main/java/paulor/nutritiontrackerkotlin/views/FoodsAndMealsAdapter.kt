@@ -9,7 +9,7 @@ import paulor.nutritiontrackerkotlin.model.Food
 
 
 class FoodsAndMealsAdapter(
-    private var allFoods: ArrayList<Food>,
+    private var allFoods: MutableList<Food>,
     private val itemClickedListener: OnItemClickListener
     ) : RecyclerView.Adapter<FoodItemViewHolder>() { // a view that will create tuples that ammount to only filling up the whole screen, and that constant number of views will be reused when scrolling through all the tuples
 
@@ -26,19 +26,19 @@ class FoodsAndMealsAdapter(
 
     override fun getItemCount(): Int = allFoods.size
 
-    fun loadNewHistoryData(newHistory: ArrayList<Food>){
-        allFoods = newHistory
-        notifyDataSetChanged()
+    fun loadNewHistoryData(newHistory: List<Food>){
+        allFoods = newHistory.toMutableList()
+        notifyDataSetChanged() // should refactor the code to use ListAdapter with diffUtils
     }
 
     fun addFood(food: Food) {
         allFoods.add(food)
-        notifyDataSetChanged()
+        notifyItemChanged(allFoods.size)
     }
 
-    fun getFood(position: Int) : Food? {
-        return if (position in 1 until itemCount) allFoods?.get(position) else null
-    }
+    fun getFood(position: Int) : Food? =
+        allFoods.getOrNull(position)
+
 }
 
 /* Implementation of the ViewHolder pattern. Its purpose is to eliminate the need for
@@ -67,7 +67,7 @@ class FoodItemViewHolder(itemView: View, var itemClickedListener: OnItemClickLis
         val addToMeal: MenuItem = menu!!.add(Menu.NONE, 1, 1, "Add to meal")
         addToMeal.setOnMenuItemClickListener(onEditMenu)
 
-        val edit: MenuItem = menu!!.add(Menu.NONE, 2, 2, "Edit")
+        val edit: MenuItem = menu.add(Menu.NONE, 2, 2, "Edit")
         edit.setOnMenuItemClickListener(onEditMenu)
     }
 

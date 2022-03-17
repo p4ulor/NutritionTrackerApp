@@ -23,23 +23,20 @@ class NutritionTrackerRepo(private val dao: TablesDAO) {
         doAsync { dao.insert(food) }
     }
 
-    fun putMealTableInDB(meal: MealsTable) : Boolean {
+    fun putMealTableInDB(meal: MealsTable): Boolean {
         doAsync {
             dao.insert(meal)
         }
         return true
     }
 
-    fun getAllWith(name: String?): List<Food>? {
-        val result = doAsyncWithResult {
-            dao.getAllFoods().map {
-                it.toFood()
-            }
-        }.value
-        return result
-    }
+    fun getAllWith(name: String): List<Food> =
+        dao.getAllFoodsByName(name).map {
+            it.toFood()
+        }
 
-    fun addFood4TodayTotal(foodName: String){
+
+    fun addFood4TodayTotal(foodName: String) {
         doAsync {
             /*val total = dao.getMeal(TODAYS_TOTAL_MEAL).toMeal()
             total.addFood(dao.getFood(foodName).toFood())

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -52,24 +53,23 @@ class MainActivity : AppCompatActivity() {
 }
 
 class MainActivityViewModel(app: Application) : AndroidViewModel(app) {
-    var todaysNutrition = Meal("TODAYS_TOTAL")
-    private val webPageScrap = MutableLiveData("")
-    var foods: LiveData<List<Food>>? = null
-        private set
-
-    var meals: LiveData<List<Meal>>? = null
-        private set
-
-    var track: LiveData<List<Track>>? = null
-        private set
 
     private val context = getApplication<NutritionTrackerApp>()
     private val dao: TablesDAO by lazy { context.ediblesDB.getDAO() }
     val repo: NutritionTrackerRepo by lazy { context.repo }
 
-    fun loadHistory() {
-        foods = doAsyncWithResult { dao.getAllFoods().map { it.toFood() } }
-        meals = doAsyncWithResult { dao.getAllMeals().map { it.toMeal() } }
+
+    var todaysNutrition = Meal("TODAYS_TOTAL")
+
+
+    private val webPageScrap = MutableLiveData("")
+
+    val foods: LiveData<List<Food>> = dao.getAllFoods().map { foodList ->
+        foodList.map { it.toFood() }
+    }
+
+    val meals: LiveData<List<Meal>> = dao.getAllMeals().map { mealsList ->
+        mealsList.map { it.toMeal() }
     }
 
     fun getValuesToLog() {

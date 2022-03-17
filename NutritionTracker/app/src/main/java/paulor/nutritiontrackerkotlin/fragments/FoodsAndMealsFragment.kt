@@ -25,52 +25,63 @@ private const val TAG = "FoodsAndMealsFragment"
 
 class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
 
-    private lateinit var layout: FragmentFoodsAndMealsBinding
+    private var _binding: FragmentFoodsAndMealsBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: MainActivityViewModel by activityViewModels() //is a reference to the same instance of the view model of the activity that hosts this fragment
-    lateinit var recyclerView: RecyclerView
-    lateinit var adapter: FoodsAndMealsAdapter
+    lateinit var foodAndMealAdapter: FoodsAndMealsAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         log("onCreateView")
-        layout = FragmentFoodsAndMealsBinding.inflate(inflater, container, false)
-        val root: View = layout.root
-        recyclerView = layout.nutrientsListRecyclerView
-        recyclerView.layoutManager = LinearLayoutManager(root.context /*or activity*/)
-        viewModel.loadHistory()
+        _binding = FragmentFoodsAndMealsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        layout.addNewEdibleButton.setOnClickListener {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindView()
+    }
+
+    private fun bindView() {
+
+        foodAndMealAdapter = FoodsAndMealsAdapter(arrayListOf(), this)
+        binding.nutrientsListRecyclerView.run {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = foodAndMealAdapter
+        }
+
+        binding.addNewEdibleButton.setOnClickListener {
             viewModel.getValuesToLog()
             log(activity?.supportFragmentManager?.backStackEntryCount.toString())
 
-            val builder = AlertDialog.Builder(requireContext())
             val inflater = requireActivity().layoutInflater
             val dialogView = inflater.inflate(R.layout.alert_dialog_name, null)
             val name = dialogView.findViewById<EditText>(R.id.foodName)
+
             name.text.replace(0, 0, "")
-            builder.setView(dialogView)
+            AlertDialog.Builder(requireContext())
+                .setView(dialogView)
                 .setMessage("Add edible")
                 .setPositiveButton("Done") { dialog, id ->
                     val edible = Food(name.text.toString())
                     viewModel.repo.putFoodTableInDB(edible.toFoodsTable())
-                    adapter.addFood(edible)
+                    foodAndMealAdapter.addFood(edible)
                 }
                 .setNegativeButton("Cancel") { dialog, id ->
                     dialog.dismiss()
                 }
-
-            builder.create().show()
+                .create()
+                .show()
         }
 
-        return root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        log("onStart")
-        viewModel.foods?.observe(viewLifecycleOwner){
-            adapter = FoodsAndMealsAdapter(it as ArrayList<Food>, this)
-            recyclerView.adapter = adapter
+        viewModel.foods?.observe(viewLifecycleOwner) {
+            foodAndMealAdapter.loadNewHistoryData(it)
         }
+
+
     }
 
     override fun onItemPressed(food: Food, option: Int) {
@@ -85,7 +96,12 @@ class FoodsAndMealsFragment : Fragment(), OnItemClickListener {
         }
     }
 
-    override fun onItemClicked(foodName: String){
+    override fun onItemClicked(foodName: String) {
         viewModel.repo.addFood4TodayTotal(foodName)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null //prevent view hierarchy leak
     }
 }
