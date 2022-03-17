@@ -1,5 +1,6 @@
 package paulor.nutritiontrackerkotlin.model
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import paulor.nutritiontrackerkotlin.mapper
 import kotlin.collections.ArrayList
@@ -57,11 +58,14 @@ interface TablesDAO { // Data Access Object, provides methods that your app can 
     @Update
     fun update(foodsTable: FoodsTable)
 
+    @Query("SELECT * FROM FOODS WHERE name = :name ORDER BY name DESC")
+    fun getAllFoodsByName(name: String) : List<FoodsTable>
+
     @Query("SELECT * FROM FOODS ORDER BY name DESC")
-    fun getAllFoods() : List<FoodsTable>
+    fun getAllFoods() : LiveData<List<FoodsTable>>
 
     @Query("SELECT * FROM MEALS ORDER BY name DESC")
-    fun getAllMeals() : List<MealsTable>
+    fun getAllMeals() : LiveData<List<MealsTable>>
 
     @Query("SELECT * FROM FOODS ORDER BY name DESC LIMIT :count")
     fun getLast(count: Int) : List<FoodsTable>
@@ -111,8 +115,8 @@ class Converters { // https://stackoverflow.com/questions/52693954/android-room-
     }
 
     @TypeConverter
-    fun nutrientStringToFood(nutrient: String) : ArrayList<Nutrient> {
-        return mapper.fromJson(nutrient, ArrayList::class.java) as ArrayList<Nutrient>
+    fun nutrientStringToFood(nutrient: String) : ArrayList<Nutrient>? {
+        return mapper.fromJson(nutrient, ArrayList::class.java) as? ArrayList<Nutrient>
     }
 
     @TypeConverter

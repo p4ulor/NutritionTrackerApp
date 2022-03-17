@@ -12,7 +12,7 @@ import paulor.nutritiontrackerkotlin.play
 import kotlin.math.roundToInt
 
 class NutritionFactsAdapter (
-    var allNutrients: ArrayList<Nutrient>,
+    var allNutrients: MutableList<Nutrient>,
     /*private val itemClickedListener: OnItemClickListener*/
     ) : RecyclerView.Adapter<NutritionFactsViewHolder>() { // a view that will create tuples that ammount to only filling up the whole screen, and that constant number of views will be reused when scrolling through all the tuples
     val holders = ArrayList<NutritionFactsViewHolder>()
@@ -38,14 +38,14 @@ class NutritionFactsAdapter (
         return nutrients
     }
 
-    fun loadNewHistoryData(newHistory: ArrayList<Nutrient>){
-        allNutrients = newHistory
+    fun loadNewHistoryData(newHistory: List<Nutrient>){
+        allNutrients = newHistory.toMutableList()
         notifyDataSetChanged()
     }
 
     fun addNutrient(nutrient: Nutrient){
         allNutrients.add(nutrient)
-        notifyDataSetChanged()
+        notifyItemChanged(allNutrients.size)
     }
 
     fun getNutrient(position: Int) : Nutrient {
