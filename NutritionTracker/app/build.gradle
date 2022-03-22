@@ -72,6 +72,12 @@ dependencies {
     // To use Kotlin annotation processing tool (kapt)
     kapt "androidx.room:room-compiler:$roomVersion"
 
+    // Material Design (cardview)
+    implementation 'com.google.android.material:material:1.0.0'
+
+    // Gif drawable
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.24'
+
     //implementation("it.skrape:skrapeit:0-SNAPSHOT") // version number will stay - implementation may change ...
 
 
