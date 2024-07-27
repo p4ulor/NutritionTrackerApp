@@ -5,7 +5,7 @@ import kotlin.collections.ArrayList
 abstract class Edible(
     var name: String,
     var price: Float,
-    var amount: Float, //used for making up Meals and making calculation for Tracking
+    var amount: Float, //the major and global variable that propagates through the price and the nutrients in a food or meal
     var unit: EdibleUnit,
     var comment: String
 )
@@ -79,7 +79,7 @@ data class Track(
 }
 
 // a Food's Nutrient, must have it's amount appropriated/rationed to the Food's quantity in grams
-data class Nutrient(var compound: Compound, var amount: Float) {
+data class Nutrient(var compound: Compound, internal var amount: Float = 0f) {
     companion object {
         fun getAllWithZero() : ArrayList<Nutrient> {
             val compounds = Compound.values()
@@ -106,21 +106,22 @@ data class Nutrient(var compound: Compound, var amount: Float) {
             return compounds
         }
     }
+    fun editCompound(amount :Float) : Boolean {
+        if(amount < 0f) return false
+        this.amount = amount
+        return true
+    }
 }
 
-interface UnitType {
-    val fullName: String
-}
 
-enum class EdibleUnit(override val fullName: String) : UnitType {
-    U("Unit"),
-    G("Grams"),
 
-    GAL("Gallon"),
-    OUN("Ounce"),
-    CUP("Coup"),
-    SPO("Spoon"),
-    LIT("Litter");
+enum class EdibleUnit(val fullName: String, var representativeGrams: Float = 0f) {
+    U("Unit", 100f),
+    SPO("Spoon", 14f),
+    SCO("Scoop", 25f),
+
+    G("Grams"), OUN("Ounce"),
+    GAL("Gallon"), LIT("Litter");
 
     companion object {
         fun getAsStringArray() : ArrayList<String> {
@@ -130,11 +131,17 @@ enum class EdibleUnit(override val fullName: String) : UnitType {
             }
             return list
         }
-    }
-}
 
-enum class CompoundUnit(override val fullName: String) : UnitType {
-    MG("Milligrams"),
-    MCG("Micrograms"),
-    IU("International Unit")
+        fun gallonToLitters(food: Food, reverse: Boolean) : Float {
+            if(food.unit==LIT && reverse) return food.amount/3.785f *1000 //litters -> gallons
+            if(food.unit==GAL) return food.amount*3.785f //gallons -> litters
+            return -1f
+        }
+
+        fun ounceToGrams(food: Food, reverse: Boolean) : Float { // 1 gram = 0.0352 Ounces
+            if(food.unit==G && reverse) return food.amount/28.349f *1000//grams -> ounces
+            if(food.unit==OUN) return food.amount*28.349f //ounces -> grams
+            return -1f
+        }
+    }
 }

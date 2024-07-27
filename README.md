@@ -1,5 +1,14 @@
 # NutritionTrackerApp
-Nutrition tracker android app. Similar to MyFitnessPal, but more like I like it. It's simple and efficient. It gives you the most ammount of freedom to track, store and costumize what you want and how you want.
+Nutrition tracker android app. Similar and inspired by [MyFitnessPal](https://www.myfitnesspal.com/) and [Cronometer (very good)](https://cronometer.com/). See a cronometer [app demo](https://www.youtube.com/watch?v=9MKGDlWQO7s). My app aims to be simple and complete. It gives you the most ammount of freedom to track, store and costumize what you want and how you want.
+
+## Code shortcuts
+- [src](NutritionTracker/app/src/main/java/paulor/nutritiontrackerkotlin)
+- [res](NutritionTracker/app/src/main/res)
+- [layout](NutritionTracker/app/src/main/res/layout/)
+
+## Nutrition data websites
+- https://nutritiondata.self.com/ (the one I will use first)
+- https://www.nutritionvalue.org/
 
 ## Main objects
 So that you can understand what you can do

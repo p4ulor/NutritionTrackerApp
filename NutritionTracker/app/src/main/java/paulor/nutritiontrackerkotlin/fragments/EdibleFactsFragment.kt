@@ -51,8 +51,6 @@ class EdibleFactsFragment : Fragment(), AdapterView.OnItemSelectedListener {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(true)
         bindView()
-
-
     }
 
 
@@ -64,7 +62,6 @@ class EdibleFactsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         edibleName = food.name
         linkText = food.selfNutritionDataURL
-
 
         nutritionFactsAdapter = NutritionFactsAdapter(food.nutrients.orEmpty().toMutableList())
         binding.nutrientsListRecyclerView.run {
@@ -164,8 +161,6 @@ class EdibleFactsFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                 dialog.show()
             }
-
-
         }
 
     }
